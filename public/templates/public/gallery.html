@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="relative py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li class="text-accent">Gallery</li>
+                </ul>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">Our Gallery</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">Explore moments of joy, learning, and discovery at Lofty Creek Christian School.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            
+            <!-- Filters (Decorative / Functional if JS added) -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12">
+                <button class="btn btn-primary btn-sm md:btn-md rounded-full shadow-md">All</button>
+                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Campus</button>
+                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Academics</button>
+                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Events</button>
+                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Sports</button>
+            </div>
+
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                
+                <!-- Image Item 1 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    <img src="https://images.unsplash.com/photo-1546410531-bda9ae9c890a?w=600&h=450&fit=crop" alt="Students in Classroom" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-primary mb-2 w-max border-none">Academics</span>
+                        <h3 class="text-white font-bold text-xl">Interactive Learning</h3>
+                        <p class="text-white/80 text-sm">Our students engaged in group discussions.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 2 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&h=450&fit=crop" alt="School Environment" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-secondary mb-2 w-max border-none text-white">Campus</span>
+                        <h3 class="text-white font-bold text-xl">Our Beautiful Campus</h3>
+                        <p class="text-white/80 text-sm">A serene environment conducive for learning.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 3 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 md:col-span-2 md:row-span-2">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Kids playing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+                        <span class="badge badge-accent mb-2 w-max border-none">Events</span>
+                        <h3 class="text-white font-display font-bold text-3xl mb-2">Annual Sports Day</h3>
+                        <p class="text-white/80 text-md max-w-lg">Students exhibiting excellent teamwork and sportsmanship during our annual inter-house competitions.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 4 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?w=600&h=450&fit=crop" alt="Graduation" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-primary mb-2 w-max border-none">Events</span>
+                        <h3 class="text-white font-bold text-xl">Graduation Ceremony</h3>
+                        <p class="text-white/80 text-sm">Celebrating milestones and achievements.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 5 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=450&fit=crop" alt="Science Lab" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-secondary mb-2 w-max border-none text-white">Academics</span>
+                        <h3 class="text-white font-bold text-xl">Practical Skills</h3>
+                        <p class="text-white/80 text-sm">Hands-on learning in the science laboratory.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 6 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    <img src="https://images.unsplash.com/photo-1600195077077-7c815f540a3d?w=600&h=450&fit=crop" alt="Library" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-accent mb-2 w-max border-none">Campus</span>
+                        <h3 class="text-white font-bold text-xl">Reading Corner</h3>
+                        <p class="text-white/80 text-sm">Fostering a reading culture among learners.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 7 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 md:col-span-2">
+                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb046ebf?w=800&h=400&fit=crop" alt="Playtime" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-primary mb-2 w-max border-none">Sports</span>
+                        <h3 class="text-white font-bold text-2xl">Holistic Growth</h3>
+                        <p class="text-white/80 text-sm">Playtime is essential for physical and social development.</p>
+                    </div>
+                </div>
+
+                <!-- Image Item 8 -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=450&fit=crop" alt="Art Class" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="badge badge-secondary mb-2 w-max border-none text-white">Academics</span>
+                        <h3 class="text-white font-bold text-xl">Creative Expresssion</h3>
+                        <p class="text-white/80 text-sm">Nurturing artistic talents in our students.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- View More Button -->
+            <div class="text-center mt-12">
+                <button class="btn btn-outline btn-primary rounded-full px-8">
+                    <i class="fas fa-spinner mr-2 hidden"></i> Load More Images
+                </button>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Admission CTA Banner -->
+    <section class="py-16 bg-gradient-to-r from-primary to-secondary text-white relative overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-10"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl font-display font-bold mb-2">Want to be part of these memories?</h2>
+                    <p class="text-white/80">Join the Lofty Creek Christian School family today.</p>
+                </div>
+                <div class="flex justify-center md:justify-end gap-4">
+                    <a href="{% url 'public:admissions' %}" class="btn btn-accent btn-lg shadow-xl border-none">
+                        Enroll Now <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

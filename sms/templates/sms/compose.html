@@ -1,0 +1,451 @@
+{% extends 'sms/dashboard_base.html' %}
+
+{% block header_title %}SMS Broadcast Hub{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-10 max-w-7xl mx-auto space-y-4 md:space-y-6 lg:space-y-8">
+    
+    <!-- Header & Stats -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-6 bg-white p-4 md:p-6 lg:p-8 rounded-2xl md:rounded-[2rem] shadow-xl border border-base-200 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+        <div class="relative z-10">
+            <h1 class="text-xl md:text-2xl lg:text-3xl font-display font-bold text-gray-800 flex items-center gap-2 md:gap-3">
+                <i class="fas fa-satellite-dish text-accent"></i> Broadcast Hub
+            </h1>
+            <p class="text-gray-500 mt-1 md:mt-2 text-sm md:text-base lg:text-lg">Target groups and send campaigns.</p>
+        </div>
+        
+        <div class="relative z-10 flex gap-2 md:gap-4">
+            <div class="stat bg-base-100 rounded-xl md:rounded-2xl border border-base-200 py-1 md:py-2 px-3 md:px-4 h-auto shadow-sm min-w-[80px] md:min-w-[100px]">
+                <div class="stat-title text-[8px] md:text-[10px] uppercase font-bold tracking-wider">Sent</div>
+                <div class="stat-value text-primary text-base md:text-xl">{{ total_sent }}</div>
+            </div>
+            <div class="stat bg-base-100 rounded-xl md:rounded-2xl border border-base-200 py-1 md:py-2 px-3 md:px-4 h-auto shadow-sm min-w-[80px] md:min-w-[100px]">
+                <div class="stat-title text-[8px] md:text-[10px] uppercase font-bold tracking-wider">Failed</div>
+                <div class="stat-value text-error text-base md:text-xl">{{ total_failed }}</div>
+            </div>
+        </div>
+    </div>
+
+        {% if messages %}
+        <div class="toast toast-top toast-end z-[100] fixed top-4 right-4">
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}bg-success text-white{% elif message.tags == 'error' %}bg-error text-white{% else %}bg-info text-white{% endif %} shadow-2xl mb-2 rounded-2xl flex justify-between items-start w-80 sm:w-96 border-none backdrop-blur-md bg-opacity-95" id="toast-msg-{{ forloop.counter }}">
+                    <div class="flex items-center gap-3">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle text-2xl drop-shadow-md"></i>
+                        {% elif message.tags == 'error' %}
+                            <i class="fas fa-times-circle text-2xl drop-shadow-md"></i>
+                        {% endif %}
+                        <span class="font-medium text-sm drop-shadow-md whitespace-normal break-words">{{ message }}</span>
+                    </div>
+                    <button type="button" class="btn btn-ghost btn-sm btn-circle hover:bg-white/20 -mr-2 -mt-1" onclick="document.getElementById('toast-msg-{{ forloop.counter }}').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        const t = document.getElementById('toast-msg-{{ forloop.counter }}');
+                        if(t) {
+                            t.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            t.style.opacity = '0';
+                            t.style.transform = 'translateY(-20px)';
+                            setTimeout(() => t.remove(), 500);
+                        }
+                    }, 10000); // 10 seconds auto-dismiss
+                </script>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="grid lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8">
+            
+            <!-- Left Column: Compose Form -->
+            <div class="lg:col-span-5 xl:col-span-4">
+                <div class="bg-white rounded-2xl md:rounded-[2rem] shadow-xl p-4 md:p-6 lg:p-8 border border-base-300 sticky top-4 md:top-8">
+                    <h2 class="text-lg md:text-xl lg:text-2xl font-bold text-primary mb-4 md:mb-6 flex items-center gap-2">
+                        <i class="fas fa-pen-square text-accent"></i> New Broadcast
+                    </h2>
+                    
+                    <form method="POST" action="{% url 'sms:compose' %}" class="space-y-5" id="compose-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold text-gray-700">Campaign Title</span></label>
+                            <input type="text" name="campaign_name" placeholder="e.g. PTA Meeting Reminder" class="input input-sm input-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full rounded-xl text-gray-900 bg-white" required />
+                        </div>
+
+                        <!-- Target Audience System -->
+                        <div class="form-control">
+                            <label class="label mb-2"><span class="label-text font-bold text-gray-700">Select Recipients</span></label>
+                            
+                            <div class="space-y-4">
+                                <!-- Categories -->
+                                <div class="bg-base-50 p-4 border border-base-200 rounded-2xl">
+                                    <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">By Main Categories</p>
+                                    <div class="flex flex-col gap-2">
+                                        <label class="cursor-pointer flex items-center gap-3 hover:bg-base-200 p-2 rounded-lg transition-colors">
+                                            <input type="checkbox" name="target_categories" value="PARENT" class="checkbox checkbox-sm checkbox-primary main-category-checkbox" />
+                                            <div class="flex items-center gap-2">
+                                                <i class="fas fa-user-friends text-primary w-5 text-center"></i>
+                                                <span class="label-text font-medium text-gray-800">All Parents / Guardians</span>
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer flex items-center gap-3 hover:bg-base-200 p-2 rounded-lg transition-colors">
+                                            <input type="checkbox" name="target_categories" value="TEACHER" class="checkbox checkbox-sm checkbox-secondary main-category-checkbox" />
+                                            <div class="flex items-center gap-2">
+                                                <i class="fas fa-chalkboard-teacher text-secondary w-5 text-center"></i>
+                                                <span class="label-text font-medium text-gray-800">All Teachers</span>
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer flex items-center gap-3 hover:bg-base-200 p-2 rounded-lg transition-colors">
+                                            <input type="checkbox" name="target_categories" value="STAFF" class="checkbox checkbox-sm checkbox-accent main-category-checkbox" />
+                                            <div class="flex items-center gap-2">
+                                                <i class="fas fa-user-cog text-accent w-5 text-center"></i>
+                                                <span class="label-text font-medium text-gray-800">All Support Staff</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Specific Groups -->
+                                <div class="bg-base-50 p-4 border border-base-200 rounded-2xl">
+                                    <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">By Specific Groups</p>
+                                    {% if groups %}
+                                        <div class="max-h-32 overflow-y-auto space-y-1 custom-scrollbar pr-2">
+                                            {% for group in groups %}
+                                                <label class="cursor-pointer flex items-center gap-3 hover:bg-base-200 p-2 rounded-lg transition-colors">
+                                                    <input type="checkbox" name="target_groups" value="{{ group.id }}" class="checkbox checkbox-sm checkbox-accent" />
+                                                    <span class="label-text text-gray-700">{{ group.name }}</span>
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-sm text-gray-400 italic">No groups defined. Create them in Admin.</p>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Individual Contacts -->
+                                <div class="bg-base-50 p-4 border border-base-200 rounded-2xl">
+                                    <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">By Select Individuals</p>
+                                    
+                                    <div class="mb-3 relative">
+                                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                        <input type="text" id="contact-search" placeholder="Search contacts..." class="input input-xs input-bordered w-full pl-8 rounded-lg bg-white text-gray-900 border-gray-300 focus:border-primary" />
+                                    </div>
+
+                                    {% if contacts %}
+                                        <div class="max-h-40 overflow-y-auto space-y-1 custom-scrollbar pr-2" id="contacts-list">
+                                            {% for contact in contacts %}
+                                                <label class="contact-item cursor-pointer flex items-center gap-3 hover:bg-base-200 p-1.5 rounded-lg transition-colors">
+                                                    <input type="checkbox" name="target_contacts" value="{{ contact.id }}" data-category="{{ contact.category }}" class="checkbox checkbox-xs checkbox-primary individual-checkbox" />
+                                                    <span class="label-text text-gray-700 text-xs font-medium">{{ contact.name }}</span>
+                                                    <span class="text-[10px] text-gray-400 font-mono">{{ contact.phone_number }}</span>
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-sm text-gray-400 italic">No contacts registered yet.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-bold text-gray-700">Message Template (Optional)</span>
+                            </label>
+                            <select id="template-selector" class="select select-bordered select-sm w-full rounded-xl text-gray-900 bg-white border-gray-300">
+                                <option value="" selected>-- Select a Template --</option>
+                                {% for template in templates %}
+                                    <option value="{{ template.body }}">{{ template.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-bold text-gray-700">Message Content</span>
+                                <span class="label-text-alt font-medium text-primary" id="char-count">0 chars | 1 SMS</span>
+                            </label>
+                            <textarea name="message_body" id="message-body" placeholder="Type your broadcast message here..." class="textarea textarea-bordered h-32 focus:border-primary focus:ring-1 focus:ring-primary w-full rounded-2xl text-sm text-gray-900 bg-white" required></textarea>
+                        </div>
+                        
+                        <button type="submit" onclick="return confirm('You are about to launch a live SMS broadcast to the selected recipients. This will consume SMS credits. Proceed?')" class="btn btn-primary w-full h-12 text-base rounded-xl shadow-lg shadow-primary/30 gap-2 mt-4 transition-transform hover:-translate-y-1">
+                            <i class="fas fa-paper-plane mr-2"></i> Send Broadcast
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Right Column: Campaign History -->
+            <div class="lg:col-span-7 xl:col-span-8">
+                <div class="bg-white rounded-[2rem] shadow-xl border border-base-300 overflow-hidden">
+                    <div class="p-6 border-b border-base-200 bg-base-50 flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-primary flex items-center gap-2">
+                            <i class="fas fa-history text-secondary"></i> Recent Campaigns
+                        </h2>
+                        <a href="/admin/sms/smscampaign/" class="text-sm text-accent hover:underline font-medium">View All in Admin</a>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra w-full text-sm">
+                            <thead>
+                                <tr class="bg-base-100 text-gray-600">
+                                    <th>Date</th>
+                                    <th>Campaign Name</th>
+                                    <th>Status</th>
+                                    <th>Cost (Kshs)</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for camp in campaigns %}
+                                    <tr class="hover">
+                                        <td class="whitespace-nowrap">{{ camp.created_at|date:"M d, Y H:i" }}</td>
+                                        <td class="font-medium text-gray-800 max-w-[200px] truncate" title="{{ camp.name }}">{{ camp.name }}</td>
+                                        <td>
+                                            {% if camp.status == 'SENT' %}
+                                                <div class="badge badge-success text-white badge-sm">Sent</div>
+                                            {% elif camp.status == 'QUEUED' or camp.status == 'SENDING' %}
+                                                <div class="badge badge-warning badge-sm">Sending</div>
+                                            {% elif camp.status == 'DRAFT' %}
+                                                <div class="badge badge-ghost badge-sm">Draft</div>
+                                            {% else %}
+                                                <div class="badge badge-error text-white badge-sm">Failed</div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="font-mono text-gray-600">{{ camp.total_cost }}</td>
+                                        <td class="text-right whitespace-nowrap">
+                                            <div class="flex items-center justify-end gap-1">
+                                                <label for="modal-{{ camp.id }}" class="btn btn-ghost btn-xs text-gray-500 hover:text-primary" title="View details">
+                                                    <i class="fas fa-eye"></i>
+                                                </label>
+                                                <form method="POST" action="{% url 'sms:resend_campaign' camp.id %}" class="inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" onclick="return confirm('Resend this entire broadcast to all original targets?')" class="btn btn-ghost btn-xs text-primary hover:bg-primary/10" title="Resend Campaign">
+                                                        <i class="fas fa-redo-alt"></i>
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{% url 'sms:delete_campaign' camp.id %}" class="inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" onclick="return confirm('Permanently delete this campaign record?')" class="btn btn-ghost btn-xs text-error hover:bg-error/10" title="Delete Campaign">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center py-12 text-gray-400">
+                                            <i class="fas fa-inbox text-4xl mb-3 block opacity-50"></i>
+                                            No SMS campaigns mapped to history yet.
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Information Card -->
+                <div class="mt-8 bg-gradient-to-r from-primary to-secondary rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                    <div class="relative z-10 flex flex-col sm:flex-row gap-6 items-center">
+                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center shrink-0 border border-white/30 backdrop-blur-md">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-1">Africa's Talking API Secured</h3>
+                            <p class="text-white/80 text-sm max-w-xl">This portal directly triggers real SMS messages via the Africa's Talking API. Messages are billed to your account immediately. Review your lists before hitting send.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+<!-- Generate Modals for each campaign detail dynamically -->
+{% for camp in campaigns %}
+<input type="checkbox" id="modal-{{ camp.id }}" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle backdrop-blur-sm">
+  <div class="modal-box rounded-[2rem] max-w-lg">
+    <h3 class="font-bold text-2xl text-primary mb-4">{{ camp.name }}</h3>
+    <div class="bg-base-100 p-4 rounded-xl border border-base-200 mb-4 whitespace-pre-wrap text-sm text-gray-700 italic border-l-4 border-l-accent">"{{ camp.message_body }}"</div>
+    
+    <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+        <div class="bg-base-50 p-3 rounded-lg"><span class="block text-xs font-bold text-gray-400">Sent On</span> {{ camp.created_at|date:"M d, Y H:i" }}</div>
+        <div class="bg-base-50 p-3 rounded-lg"><span class="block text-xs font-bold text-gray-400">Status</span> {{ camp.status }}</div>
+        <div class="bg-base-50 p-3 rounded-lg"><span class="block text-xs font-bold text-gray-400">Total Deductions</span> Ksh {{ camp.total_cost }}</div>
+        <div class="bg-base-50 p-3 rounded-lg"><span class="block text-xs font-bold text-gray-400">Recipients Count</span> {{ camp.messages.count }} records</div>
+    </div>
+    
+    <div class="mt-4 mb-4">
+        <h4 class="font-bold text-gray-700 text-sm mb-2">Recipient Log</h4>
+        <div class="max-h-48 overflow-y-auto custom-scrollbar rounded-xl border border-base-200">
+            <table class="table table-zebra table-xs w-full bg-white relative">
+                <thead class="bg-base-50 sticky top-0 z-10 shadow-sm">
+                    <tr>
+                        <th class="bg-base-50">Contact</th>
+                        <th class="bg-base-50">Status</th>
+                        <th class="text-right bg-base-50">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in camp.messages.all %}
+                    <tr>
+                        <td>
+                            <div class="font-medium text-gray-800">{{ msg.contact.name }}</div>
+                            <div class="text-[10px] text-gray-500 font-mono">{{ msg.contact.phone_number }}</div>
+                        </td>
+                        <td>
+                            {% if msg.status == 'SENT' %}
+                                <span class="text-success font-semibold text-[10px] uppercase tracking-wide"><i class="fas fa-check"></i> Sent</span>
+                            {% elif msg.status == 'DELIVERED' %}
+                                <span class="text-primary font-semibold text-[10px] uppercase tracking-wide"><i class="fas fa-check-double"></i> Delivered</span>
+                            {% elif msg.status == 'FAILED' %}
+                                <span class="text-error font-semibold text-[10px] uppercase tracking-wide"><i class="fas fa-times"></i> Failed</span>
+                            {% else %}
+                                <span class="text-warning font-semibold text-[10px] uppercase tracking-wide"><i class="fas fa-clock"></i> {{ msg.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-right">
+                            {% if msg.status == 'FAILED' %}
+                            <form method="POST" action="{% url 'sms:resend_message' msg.id %}" class="inline ajax-resend-msg-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ghost btn-xs text-primary hover:bg-primary/20 h-6 min-h-0 w-6 px-0 rounded-md" title="Resend SMS to this contact">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-gray-400 py-4 italic text-xs">No individual recipients logged.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="modal-action">
+      <label for="modal-{{ camp.id }}" class="btn btn-outline btn-primary rounded-xl">Close</label>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<style>
+    /* Custom thin scrollbar for lists */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('message-body');
+        const charCount = document.getElementById('char-count');
+        const templateSelector = document.getElementById('template-selector');
+        
+        function updateCharCount() {
+            const count = textarea.value.length;
+            const smsCount = count === 0 ? 1 : Math.ceil(count / 160);
+            
+            if (count > 160) {
+                charCount.classList.remove('text-primary');
+                charCount.classList.add('text-secondary');
+            } else {
+                charCount.classList.add('text-primary');
+                charCount.classList.remove('text-secondary');
+            }
+            
+            charCount.textContent = `${count} chars | ${smsCount} SMS/recip.`;
+        }
+        
+        textarea.addEventListener('input', updateCharCount);
+        
+        templateSelector.addEventListener('change', function() {
+            if (this.value) {
+                textarea.value = this.value;
+                updateCharCount();
+            }
+        });
+
+        // Contact Search Logic
+        const contactSearch = document.getElementById('contact-search');
+        const contactItems = document.querySelectorAll('.contact-item');
+
+        contactSearch.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            
+            contactItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Sync main category checkboxes with individual checkboxes
+        const mainCategoryCheckboxes = document.querySelectorAll('.main-category-checkbox');
+        const individualCheckboxes = document.querySelectorAll('.individual-checkbox');
+
+        mainCategoryCheckboxes.forEach(mainCheckbox => {
+            mainCheckbox.addEventListener('change', function() {
+                const category = this.value;
+                const isChecked = this.checked;
+                
+                individualCheckboxes.forEach(indvCheckbox => {
+                    if (indvCheckbox.dataset.category === category) {
+                        indvCheckbox.checked = isChecked;
+                    }
+                });
+            });
+        });
+
+        // Optional: Uncheck main category if an individual is unchecked
+        individualCheckboxes.forEach(indvCheckbox => {
+            indvCheckbox.addEventListener('change', function() {
+                if (!this.checked) {
+                    const category = this.dataset.category;
+                    const mainCheckbox = document.querySelector(`.main-category-checkbox[value="${category}"]`);
+                    if (mainCheckbox) {
+                        mainCheckbox.checked = false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Broadcast Loading Overlay -->
+<div class="modal backdrop-blur-md z-[200]" id="broadcast-loading-modal">
+  <div class="modal-box flex flex-col items-center py-12 bg-white shadow-2xl rounded-[2rem] border border-primary/20 max-w-sm">
+    <span class="loading loading-spinner text-primary w-16 h-16"></span>
+    <h3 class="font-bold text-xl mt-6 text-primary">Transmitting Broadcast...</h3>
+    <p class="py-2 text-gray-500 text-sm text-center">Please stand by. Connecting to Africa's Talking.<br>Do not close or refresh this page.</p>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const composeForm = document.getElementById('compose-form');
+        const loadingModal = document.getElementById('broadcast-loading-modal');
+
+        if(composeForm && loadingModal) {
+            composeForm.addEventListener('submit', function() {
+                // Displays the modal right when the form begins submitting.
+                loadingModal.classList.add('modal-open');
+            });
+        }
+    });
+</script>
+{% endblock %}

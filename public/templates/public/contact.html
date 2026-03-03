@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="relative py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li class="text-accent">Contact Us</li>
+                </ul>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">Get in Touch</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">We'd love to hear from you. Reach out to us for any inquiries, admissions, or feedback.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+                
+                <!-- Contact Info & Map -->
+                <div class="lg:w-1/2 space-y-12">
+                    <div>
+                        <span class="text-accent font-bold text-sm uppercase tracking-wider">Contact Details</span>
+                        <h2 class="text-4xl font-display font-bold text-primary mt-2 mb-8">Here to Help</h2>
+                        
+                        <div class="space-y-6">
+                            <!-- Location -->
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-primary group-hover:text-white">
+                                    <i class="fas fa-map-marker-alt text-primary group-hover:text-white text-2xl transition-colors"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-primary">Our Location</h3>
+                                    <p class="text-gray-600 leading-relaxed mt-2 text-lg">
+                                        Wambaa Road, 0.5km off the Nairobi-Nakuru Highway,<br>
+                                        Muthiga's Munyua Road,<br>
+                                        Kenya
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Phone -->
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-secondary group-hover:text-white">
+                                    <i class="fas fa-phone-alt text-secondary group-hover:text-white text-2xl transition-colors"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-primary">Phone Numbers</h3>
+                                    <p class="text-gray-600 leading-relaxed mt-2 text-lg flex flex-col space-y-1">
+                                        <a href="tel:+254712345678" class="hover:text-secondary transition-colors">+254 712 345 678</a>
+                                        <a href="tel:+254789654321" class="hover:text-secondary transition-colors">+254 789 654 321</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-accent group-hover:text-white">
+                                    <i class="fas fa-envelope text-accent group-hover:text-white text-2xl transition-colors"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-primary">Email Address</h3>
+                                    <p class="text-gray-600 leading-relaxed mt-2 text-lg flex flex-col space-y-1">
+                                        <a href="mailto:info@loftycreek.ac.ke" class="hover:text-accent transition-colors">info@loftycreek.ac.ke</a>
+                                        <a href="mailto:admissions@loftycreek.ac.ke" class="hover:text-accent transition-colors">admissions@loftycreek.ac.ke</a>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Office Hours -->
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-14 h-14 bg-success/10 rounded-2xl flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-success group-hover:text-white">
+                                    <i class="fas fa-clock text-success group-hover:text-white text-2xl transition-colors"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-xl text-primary">Office Hours</h3>
+                                    <p class="text-gray-600 leading-relaxed mt-2 text-lg">
+                                        Monday - Friday: 8:00 AM - 4:00 PM<br>
+                                        Saturday & Sunday: Closed
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="w-full h-80 rounded-3xl overflow-hidden shadow-lg border border-base-200 relative">
+                        <!-- Placeholder for a real map embed. Using an iframe with generic Nairobi coordinates -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127641.565451999!2d36.727226!3d-1.284102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1683057185260!5m2!1sen!2sus" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="absolute inset-0">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:w-1/2">
+                    <div class="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-gray-100 relative overflow-hidden h-full">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <div class="relative z-10">
+                            <h3 class="text-3xl font-display font-bold text-primary mb-2">Send us a Message</h3>
+                            <p class="text-gray-500 mb-8">Fill out the form below and we will get back to you as soon as possible.</p>
+                            
+                            <form class="space-y-6">
+                                {% csrf_token %}
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="form-control">
+                                        <label class="label"><span class="label-text font-semibold text-gray-700">First Name</span></label>
+                                        <input type="text" placeholder="John" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="label"><span class="label-text font-semibold text-gray-700">Last Name</span></label>
+                                        <input type="text" placeholder="Doe" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="form-control">
+                                        <label class="label"><span class="label-text font-semibold text-gray-700">Email Address</span></label>
+                                        <input type="email" placeholder="john@example.com" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="label"><span class="label-text font-semibold text-gray-700">Phone Number</span></label>
+                                        <input type="tel" placeholder="+254 XXX XXX XXX" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-control">
+                                    <label class="label"><span class="label-text font-semibold text-gray-700">Subject</span></label>
+                                    <select class="select select-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl">
+                                        <option disabled selected>How can we help you?</option>
+                                        <option>Admissions Inquiry</option>
+                                        <option>General Inquiry</option>
+                                        <option>Feedback / Suggestion</option>
+                                        <option>Careers</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-control">
+                                    <label class="label"><span class="label-text font-semibold text-gray-700">Your Message</span></label>
+                                    <textarea placeholder="Write your message here..." class="textarea textarea-bordered h-36 focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-2xl" required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-full shadow-lg shadow-primary/30 mt-4 h-14 text-lg rounded-xl">
+                                    <i class="fas fa-paper-plane mr-2"></i> Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

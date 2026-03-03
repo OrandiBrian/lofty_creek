@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <section class="relative py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li class="text-accent">Events</li>
+                </ul>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">School Events</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">Stay up to date with what's happening at Lofty Creek Christian School — from academic milestones to community celebrations.</p>
+        </div>
+        <!-- Decorative wave -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 60L1440 60L1440 0C1440 0 1080 60 720 60C360 60 0 0 0 0L0 60Z" fill="#FFFBF5"/></svg>
+        </div>
+    </section>
+
+    <!-- Filter Tabs -->
+    <section class="bg-base-100 pt-12 pb-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="filterEvents('all')" id="btn-all" class="event-filter-btn btn btn-primary btn-sm rounded-full px-6">All Events</button>
+                <button onclick="filterEvents('academic')" id="btn-academic" class="event-filter-btn btn btn-ghost btn-sm rounded-full px-6">Academic</button>
+                <button onclick="filterEvents('sports')" id="btn-sports" class="event-filter-btn btn btn-ghost btn-sm rounded-full px-6">Sports</button>
+                <button onclick="filterEvents('culture')" id="btn-culture" class="event-filter-btn btn btn-ghost btn-sm rounded-full px-6">Culture & Arts</button>
+                <button onclick="filterEvents('community')" id="btn-community" class="event-filter-btn btn btn-ghost btn-sm rounded-full px-6">Community</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events -->
+    <section class="bg-base-100 py-8 pb-20">
+        <div class="container mx-auto px-4">
+
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-1 h-8 bg-accent rounded-full"></div>
+                <h2 class="text-3xl font-display font-bold text-primary">Upcoming Events</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-grid">
+
+                <!-- Event Card 1 -->
+                <div class="event-card bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-1 transition-all duration-300 group" data-category="academic">
+                    <div class="relative h-52 bg-gradient-to-br from-primary/80 to-secondary overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=300&fit=crop" alt="End of Term Exams" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 flex flex-col justify-end p-5">
+                            <span class="badge bg-accent text-white border-none text-xs font-bold mb-2 w-fit">Academic</span>
+                            <div class="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-3 w-fit">
+                                <div class="text-center">
+                                    <p class="text-white font-display font-bold text-2xl leading-none">25</p>
+                                    <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Apr</p>
+                                </div>
+                                <div class="w-px h-8 bg-white/30"></div>
+                                <p class="text-white text-sm font-medium">End of Term Exams Begin</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-bold text-gray-800 mb-2">End of Term Examination Week</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">All students from Grade 1 to Grade 6 will sit for end-of-term examinations. Parents are reminded to ensure students are well rested and have all stationery materials.</p>
+                        <div class="flex flex-col gap-2 text-sm text-gray-500 border-t border-base-200 pt-4">
+                            <div class="flex items-center gap-2"><i class="fas fa-calendar-alt text-primary w-4"></i> April 25 – May 2, 2026</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary w-4"></i> All Classrooms</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-primary w-4"></i> 7:30 AM – 12:30 PM daily</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 2 -->
+                <div class="event-card bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-1 transition-all duration-300 group" data-category="sports">
+                    <div class="relative h-52 bg-gradient-to-br from-secondary/80 to-primary overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&h=300&fit=crop" alt="Inter-School Games" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 flex flex-col justify-end p-5">
+                            <span class="badge bg-green-500 text-white border-none text-xs font-bold mb-2 w-fit">Sports</span>
+                            <div class="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-3 w-fit">
+                                <div class="text-center">
+                                    <p class="text-white font-display font-bold text-2xl leading-none">10</p>
+                                    <p class="text-white/80 text-xs font-bold uppercase tracking-wider">May</p>
+                                </div>
+                                <div class="w-px h-8 bg-white/30"></div>
+                                <p class="text-white text-sm font-medium">Inter-School Athletics Day</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-bold text-gray-800 mb-2">Inter-School Athletics Day</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Come cheer on our students at the annual inter-school athletics competition. Events include sprints, relay races, long jump, and hurdles for all age groups.</p>
+                        <div class="flex flex-col gap-2 text-sm text-gray-500 border-t border-base-200 pt-4">
+                            <div class="flex items-center gap-2"><i class="fas fa-calendar-alt text-primary w-4"></i> May 10, 2026</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary w-4"></i> School Sports Ground</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-primary w-4"></i> 8:00 AM – 4:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 3 -->
+                <div class="event-card bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-1 transition-all duration-300 group" data-category="community">
+                    <div class="relative h-52 bg-gradient-to-br from-accent/60 to-primary overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=300&fit=crop" alt="PTA Meeting" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 flex flex-col justify-end p-5">
+                            <span class="badge bg-blue-500 text-white border-none text-xs font-bold mb-2 w-fit">Community</span>
+                            <div class="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-3 w-fit">
+                                <div class="text-center">
+                                    <p class="text-white font-display font-bold text-2xl leading-none">17</p>
+                                    <p class="text-white/80 text-xs font-bold uppercase tracking-wider">May</p>
+                                </div>
+                                <div class="w-px h-8 bg-white/30"></div>
+                                <p class="text-white text-sm font-medium">PTA Mid-Year Meeting</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-bold text-gray-800 mb-2">PTA Mid-Year Meeting</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">All parents and guardians are invited to join the Parent-Teacher Association's mid-year meeting to discuss academic progress, school improvements, and term 2 fee collections.</p>
+                        <div class="flex flex-col gap-2 text-sm text-gray-500 border-t border-base-200 pt-4">
+                            <div class="flex items-center gap-2"><i class="fas fa-calendar-alt text-primary w-4"></i> May 17, 2026</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary w-4"></i> School Hall</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-primary w-4"></i> 9:00 AM – 12:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 4 -->
+                <div class="event-card bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-1 transition-all duration-300 group" data-category="culture">
+                    <div class="relative h-52 bg-gradient-to-br from-purple-600/80 to-primary overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=300&fit=crop" alt="Drama & Music Festival" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 flex flex-col justify-end p-5">
+                            <span class="badge bg-purple-500 text-white border-none text-xs font-bold mb-2 w-fit">Culture & Arts</span>
+                            <div class="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-3 w-fit">
+                                <div class="text-center">
+                                    <p class="text-white font-display font-bold text-2xl leading-none">6</p>
+                                    <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Jun</p>
+                                </div>
+                                <div class="w-px h-8 bg-white/30"></div>
+                                <p class="text-white text-sm font-medium">Drama & Music Festival</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-bold text-gray-800 mb-2">Annual Drama & Music Festival</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Watch our talented students perform in an afternoon of drama, choral music, and solo performances celebrating the school's rich artistic culture. All are welcome!</p>
+                        <div class="flex flex-col gap-2 text-sm text-gray-500 border-t border-base-200 pt-4">
+                            <div class="flex items-center gap-2"><i class="fas fa-calendar-alt text-primary w-4"></i> June 6, 2026</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary w-4"></i> School Auditorium</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-primary w-4"></i> 2:00 PM – 6:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 5 -->
+                <div class="event-card bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-1 transition-all duration-300 group" data-category="academic">
+                    <div class="relative h-52 bg-gradient-to-br from-primary to-accent/80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=300&fit=crop" alt="Open Day" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 flex flex-col justify-end p-5">
+                            <span class="badge bg-accent text-white border-none text-xs font-bold mb-2 w-fit">Academic</span>
+                            <div class="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-3 w-fit">
+                                <div class="text-center">
+                                    <p class="text-white font-display font-bold text-2xl leading-none">20</p>
+                                    <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Jun</p>
+                                </div>
+                                <div class="w-px h-8 bg-white/30"></div>
+                                <p class="text-white text-sm font-medium">School Open Day</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-bold text-gray-800 mb-2">School Open Day 2026</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Prospective parents and students are invited to tour the school, meet our teachers, and learn more about enrolment opportunities for the 2027 academic year.</p>
+                        <div class="flex flex-col gap-2 text-sm text-gray-500 border-t border-base-200 pt-4">
+                            <div class="flex items-center gap-2"><i class="fas fa-calendar-alt text-primary w-4"></i> June 20, 2026</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary w-4"></i> Full School Campus</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-primary w-4"></i> 9:00 AM – 1:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 6 -->
+                <div class="event-card bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-1 transition-all duration-300 group" data-category="community">
+                    <div class="relative h-52 bg-gradient-to-br from-secondary to-accent/70 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64?w=600&h=300&fit=crop" alt="Graduation Day" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 flex flex-col justify-end p-5">
+                            <span class="badge bg-blue-500 text-white border-none text-xs font-bold mb-2 w-fit">Community</span>
+                            <div class="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-3 w-fit">
+                                <div class="text-center">
+                                    <p class="text-white font-display font-bold text-2xl leading-none">18</p>
+                                    <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Jul</p>
+                                </div>
+                                <div class="w-px h-8 bg-white/30"></div>
+                                <p class="text-white text-sm font-medium">Graduation Ceremony</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-bold text-gray-800 mb-2">Annual Graduation Ceremony</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">A joyful celebration honouring our graduating Grade 6 students as they complete their primary school journey at Lofty Creek and transition to secondary education.</p>
+                        <div class="flex flex-col gap-2 text-sm text-gray-500 border-t border-base-200 pt-4">
+                            <div class="flex items-center gap-2"><i class="fas fa-calendar-alt text-primary w-4"></i> July 18, 2026</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary w-4"></i> School Hall</div>
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-primary w-4"></i> 10:00 AM – 2:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- No results message -->
+            <div id="no-events-msg" class="hidden text-center py-16">
+                <i class="fas fa-calendar-times text-5xl text-gray-300 mb-4 block"></i>
+                <p class="text-gray-400 text-lg font-medium">No events in this category yet.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Past Events / Highlights -->
+    <section class="py-20 bg-secondary">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-display font-bold text-white mb-3">Past Highlights</h2>
+                <p class="text-white/70 max-w-xl mx-auto">A look back at memorable moments from our school community.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg aspect-square">
+                    <img src="https://images.unsplash.com/photo-1551854838-212c50b4c184?w=400&h=400&fit=crop" alt="Science Fair" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                        <div>
+                            <p class="text-xs text-accent font-bold uppercase tracking-wider mb-1">October 2025</p>
+                            <p class="text-white font-bold">Science & Innovation Fair</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg aspect-square">
+                    <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=400&h=400&fit=crop" alt="Sports Day" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                        <div>
+                            <p class="text-xs text-accent font-bold uppercase tracking-wider mb-1">August 2025</p>
+                            <p class="text-white font-bold">Annual Sports Day</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg aspect-square">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=400&fit=crop" alt="Prize Giving" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                        <div>
+                            <p class="text-xs text-accent font-bold uppercase tracking-wider mb-1">December 2025</p>
+                            <p class="text-white font-bold">Prize Giving Day</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg aspect-square">
+                    <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&h=400&fit=crop" alt="Christmas Concert" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                        <div>
+                            <p class="text-xs text-accent font-bold uppercase tracking-wider mb-1">December 2025</p>
+                            <p class="text-white font-bold">Christmas Carol Concert</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="bg-gradient-to-r from-primary to-secondary rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+                <div class="relative z-10">
+                    <i class="fas fa-bell text-4xl text-accent mb-4 block animate-bounce"></i>
+                    <h2 class="text-4xl font-display font-bold mb-4">Never Miss an Event</h2>
+                    <p class="text-white/80 text-lg max-w-xl mx-auto mb-8">Ensure your contact is registered with the school so you receive SMS reminders for all upcoming school events and important announcements.</p>
+                    <a href="{% url 'public:contact' %}" class="btn btn-accent text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all gap-2 font-bold px-8">
+                        <i class="fas fa-phone"></i> Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<script>
+    function filterEvents(category) {
+        // Update button styles
+        document.querySelectorAll('.event-filter-btn').forEach(btn => {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-ghost');
+        });
+        const activeBtn = document.getElementById('btn-' + category);
+        if (activeBtn) {
+            activeBtn.classList.remove('btn-ghost');
+            activeBtn.classList.add('btn-primary');
+        }
+
+        // Filter cards
+        const cards = document.querySelectorAll('.event-card');
+        let visibleCount = 0;
+        cards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Show / hide empty state
+        document.getElementById('no-events-msg').classList.toggle('hidden', visibleCount > 0);
+    }
+</script>
+
+{% endblock %}

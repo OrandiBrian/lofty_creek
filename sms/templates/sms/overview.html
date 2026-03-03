@@ -1,0 +1,215 @@
+{% extends 'sms/dashboard_base.html' %}
+
+{% block header_title %}Overview Dashboard{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-10 max-w-7xl mx-auto space-y-4 md:space-y-6 lg:space-y-8">
+
+    <!-- Welcome Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4 bg-white p-4 md:p-6 lg:p-8 rounded-2xl md:rounded-[2rem] shadow-xl border border-base-200 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+        <div class="relative z-10">
+            <h1 class="text-xl md:text-2xl lg:text-3xl font-display font-bold text-gray-800">Welcome, {{ request.user.username|title }}!</h1>
+            <p class="text-gray-500 mt-1 md:mt-2 text-sm md:text-base lg:text-lg">Communication hub overview.</p>
+        </div>
+        <div class="relative z-10 flex flex-wrap gap-2 md:gap-3">
+            <a href="{% url 'sms:compose' %}" class="btn btn-primary btn-sm md:btn-md rounded-lg md:rounded-xl shadow-lg shadow-primary/30 gap-1 md:gap-2">
+                <i class="fas fa-paper-plane"></i> <span class="hidden sm:inline">New </span>Broadcast
+            </a>
+            <a href="{% url 'sms:contacts' %}" class="btn btn-outline btn-primary btn-sm md:btn-md rounded-lg md:rounded-xl gap-1 md:gap-2 hidden md:flex">
+                <i class="fas fa-user-plus"></i> Add Contact
+            </a>
+        </div>
+    </div>
+
+    <!-- Key Metrics Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 md:gap-4 lg:gap-6">
+        <!-- Stat Card 1 -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
+            <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-blue-100 text-blue-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="text-center md:text-left min-w-0">
+                <p class="text-[8px] md:text-[10px] lg:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0 lg:mb-1 truncate">Contacts</p>
+                <h3 class="text-base md:text-xl lg:text-3xl font-display font-bold text-gray-800">{{ total_contacts }}</h3>
+            </div>
+        </div>
+
+        <!-- Stat Card 2 -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
+            <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-green-100 text-green-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="text-center md:text-left min-w-0">
+                <p class="text-[8px] md:text-[10px] lg:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0 lg:mb-1 truncate">Sent</p>
+                <h3 class="text-base md:text-xl lg:text-3xl font-display font-bold text-gray-800">{{ total_messages_sent }}</h3>
+            </div>
+        </div>
+
+        <!-- Stat Card 3 -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
+            <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-purple-100 text-purple-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="text-center md:text-left min-w-0">
+                <p class="text-[8px] md:text-[10px] lg:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0 lg:mb-1 truncate">Campaigns</p>
+                <h3 class="text-base md:text-xl lg:text-3xl font-display font-bold text-gray-800">{{ total_campaigns }}</h3>
+            </div>
+        </div>
+
+        <!-- Stat Card 4 -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
+            <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-indigo-100 text-indigo-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="text-center md:text-left min-w-0">
+                <p class="text-[8px] md:text-[10px] lg:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0 lg:mb-1 truncate">Templates</p>
+                <h3 class="text-base md:text-xl lg:text-3xl font-display font-bold text-gray-800">{{ total_templates }}</h3>
+            </div>
+        </div>
+
+        <!-- Stat Card 5 -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300 col-span-2 lg:col-span-1">
+            <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-orange-100 text-orange-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="text-center md:text-left min-w-0">
+                <p class="text-[8px] md:text-[10px] lg:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0 lg:mb-1 truncate">Spend</p>
+                <h3 class="text-sm md:text-lg lg:text-2xl font-display font-bold text-gray-800">Ksh {{ total_spend|floatformat:0 }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="space-y-8">
+        
+        <!-- Top: Recent Campaigns list -->
+        <div class="bg-white rounded-[2rem] shadow-xl border border-base-300 flex flex-col">
+            <div class="p-6 md:p-8 border-b border-base-200 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-primary flex items-center gap-2">
+                    <i class="fas fa-history text-secondary"></i> Recent Outbound Campaigns
+                </h3>
+                <a href="{% url 'sms:compose' %}" class="btn btn-ghost btn-sm text-accent">View All Log</a>
+            </div>
+            
+            <div class="p-2">
+                <div class="overflow-x-auto">
+                    <table class="table text-sm">
+                        <thead>
+                            <tr class="text-gray-500 uppercase tracking-wide border-b-2 border-base-200">
+                                <th class="bg-transparent">Campaign Name</th>
+                                <th class="bg-transparent">Date</th>
+                                <th class="bg-transparent">Status</th>
+                                <th class="bg-transparent text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for camp in recent_campaigns %}
+                                <tr class="hover border-base-200 transition-colors">
+                                    <td class="py-4">
+                                        <div class="font-bold text-gray-800">{{ camp.name }}</div>
+                                        <div class="text-xs text-gray-400 mt-1 truncate max-w-lg" title="{{ camp.message_body }}">{{ camp.message_body }}</div>
+                                    </td>
+                                    <td class="text-gray-600 font-medium whitespace-nowrap">
+                                        {{ camp.created_at|date:"M d, Y" }}
+                                    </td>
+                                    <td>
+                                        {% if camp.status == 'SENT' %}
+                                            <div class="badge badge-success text-white badge-sm px-3 py-2">Sent</div>
+                                        {% elif camp.status == 'QUEUED' or camp.status == 'SENDING' %}
+                                            <div class="badge badge-warning badge-sm px-3 py-2">Sending</div>
+                                        {% elif camp.status == 'DRAFT' %}
+                                            <div class="badge badge-ghost badge-sm px-3 py-2">Draft</div>
+                                        {% else %}
+                                            <div class="badge badge-error text-white badge-sm px-3 py-2">Failed</div>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <form method="POST" action="{% url 'sms:resend_campaign' camp.id %}" class="inline">
+                                                {% csrf_token %}
+                                                <button type="submit" onclick="return confirm('Resend this entire campaign? It will be sent to the original targets and billed accordingly.')" class="btn btn-ghost btn-xs text-primary hover:bg-primary/10">
+                                                    <i class="fas fa-redo-alt shadow-sm"></i> Resend
+                                                </button>
+                                            </form>
+                                            <form method="POST" action="{% url 'sms:delete_campaign' camp.id %}" class="inline">
+                                                {% csrf_token %}
+                                                <button type="submit" onclick="return confirm('Permanently delete this campaign record?')" class="btn btn-ghost btn-xs text-error hover:bg-error/10">
+                                                    <i class="fas fa-trash-alt shadow-sm"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-16 text-gray-400">
+                                        <div class="w-16 h-16 bg-base-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <i class="fas fa-wind text-2xl text-gray-300"></i>
+                                        </div>
+                                        <p class="font-medium text-gray-500">No campaigns launched yet.</p>
+                                        <a href="{% url 'sms:compose' %}" class="text-accent hover:underline mt-2 inline-block">Draft your first one</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom: Demographics & Top Up -->
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Quick Demographics Chart / Bars -->
+            <div class="bg-white rounded-[2rem] shadow-xl border border-base-300 p-8 h-full flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-6 flex items-center gap-2">
+                        <i class="fas fa-chart-pie text-accent"></i> Contact Demographics
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-bold text-gray-700">Parents/Guardians</span>
+                                <span class="text-primary font-bold">{{ parent_count }}</span>
+                            </div>
+                            <progress class="progress progress-primary w-full h-3" value="{{ parent_count }}" max="{{ total_contacts|default:1 }}"></progress>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-bold text-gray-700">Teachers/Staff</span>
+                                <span class="text-secondary font-bold">{{ staff_count }}</span>
+                            </div>
+                            <progress class="progress progress-secondary w-full h-3" value="{{ staff_count }}" max="{{ total_contacts|default:1 }}"></progress>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-6 border-t border-base-200">
+                    <a href="{% url 'sms:contacts' %}" class="text-accent hover:text-primary font-bold flex items-center justify-between group">
+                        Manage entire directory <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Help Box -->
+            <div class="bg-gradient-to-br from-primary to-accent rounded-[2rem] shadow-xl p-8 text-white relative overflow-hidden h-full flex flex-col justify-center">
+                <div class="absolute -right-4 -bottom-4 opacity-10 text-[10rem]">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-3 relative z-10">Need to top up?</h3>
+                <p class="text-white/80 text-base mb-6 relative z-10 max-w-sm">Your SMS credits are managed directly through your Africa's Talking portal. Login there to purchase large credit bundles via M-Pesa or Card.</p>
+                <div>
+                    <a href="https://africastalking.com" target="_blank" class="btn bg-white/20 hover:bg-white text-white hover:text-primary border-none rounded-xl shadow-lg relative z-10 px-8">
+                        Go to AT Dashboard
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="corporate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCCS SMS Dashboard - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'img/logo_2.png' %}">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7B1F2E',
+                        'primary-focus': '#5A1620',
+                        secondary: '#1E3A5F',
+                        accent: '#F59E0B',
+                        'base-100': '#FFFBF5',
+                        'base-200': '#FDF6E3',
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+        .login-bg {
+            background: linear-gradient(135deg, #7B1F2E 0%, #1E3A5F 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="min-h-screen login-bg flex items-center justify-center p-4">
+    
+    <div class="w-full max-w-sm md:max-w-md">
+        <!-- Logo and Header -->
+        <div class="text-center mb-6 md:mb-8">
+            <img src="{% static 'img/logo_2.png' %}" alt="LCCS Logo" class="h-40 md:h-45 w-auto mx-auto mb-3 md:mb-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">LCCS SMS Dashboard</h1>
+            <p class="text-white/80 text-sm md:text-base">Lofty Creek Christian School</p>
+        </div>
+        
+        <!-- Login Card -->
+        <div class="glass-effect rounded-xl md:rounded-2xl shadow-2xl p-6 md:p-8">
+            <h2 class="text-xl md:text-2xl font-bold text-center mb-4 md:mb-6 text-gray-800">
+                <i class="fas fa-lock text-primary mr-2"></i>Staff Login
+            </h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-{{ message.tags }}{% endif %} mb-4">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" class="space-y-4 md:space-y-5">
+                {% csrf_token %}
+                
+                <!-- Username -->
+                <div class="form-control">
+                    <label class="label py-1">
+                        <span class="label-text font-semibold text-gray-700 text-sm">
+                            <i class="fas fa-user mr-2 text-primary"></i>Username
+                        </span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="input input-bordered w-full bg-white border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm" 
+                        placeholder="Enter your username"
+                        required
+                        autofocus
+                    >
+                </div>
+                
+                <!-- Password -->
+                <div class="form-control">
+                    <label class="label py-1">
+                        <span class="label-text font-semibold text-gray-700 text-sm">
+                            <i class="fas fa-key mr-2 text-primary"></i>Password
+                        </span>
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="password"
+                            class="input input-bordered w-full bg-white border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 pr-12 text-sm" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword()" 
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
+                        >
+                            <i class="fas fa-eye" id="eye-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Remember Me -->
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" class="checkbox checkbox-primary checkbox-sm">
+                        <span class="text-sm text-gray-600">Remember me</span>
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-full text-white font-bold py-2 md:py-3 rounded-xl hover:bg-primary-focus transition-all shadow-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login to Dashboard
+                </button>
+            </form>
+            
+            <!-- Footer Links -->
+            <div class="mt-4 md:mt-6 text-center">
+                <a href="{% url 'admin:login' %}" class="text-xs md:text-sm text-gray-500 hover:text-primary transition-colors">
+                    <i class="fas fa-cog mr-1"></i>Admin Panel Login
+                </a>
+                <span class="text-gray-300 mx-1 md:mx-2">|</span>
+                <a href="{% url 'public:index' %}" class="text-xs md:text-sm text-gray-500 hover:text-primary transition-colors">
+                    <i class="fas fa-home mr-1"></i>Back to Website
+                </a>
+            </div>
+        </div>
+        
+        <!-- Copyright -->
+        <p class="text-center text-white/60 text-xs md:text-sm mt-4 md:mt-6">
+            © 2024 Lofty Creek Christian School. All rights reserved.
+        </p>
+    </div>
+    
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

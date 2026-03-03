@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="relative py-20 bg-linear-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li class="text-accent">Resources</li>
+                </ul>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">Parent Resources</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">Access important school documents, download fee structures, and read our latest school news.</p>
+        </div>
+    </section>
+
+    <!-- Documents Download Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-accent font-bold text-sm uppercase tracking-wider">Downloads</span>
+                <h2 class="text-4xl font-display font-bold text-primary mt-2">Important Documents</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Document Card -->
+                <div class="card bg-white shadow-lg border border-base-300 hover:shadow-2xl transition-all">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                                <i class="fas fa-file-pdf text-2xl"></i>
+                            </div>
+                            <span class="badge badge-primary badge-sm">Updated 2024</span>
+                        </div>
+                        <h3 class="card-title text-gray-800">Fee Structure</h3>
+                        <p class="text-sm text-gray-600 mb-4">Comprehensive breakdown of tuition and other fees for the current academic year.</p>
+                        <a href="#" class="btn btn-outline btn-primary btn-sm w-full"><i class="fas fa-download mr-2"></i>Download PDF</a>
+                    </div>
+                </div>
+
+                <!-- Document Card -->
+                <div class="card bg-white shadow-lg border border-base-300 hover:shadow-2xl transition-all">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
+                                <i class="fas fa-file-word text-2xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="card-title text-gray-800">Admission Form</h3>
+                        <p class="text-sm text-gray-600 mb-4">Application form for new students joining Playgroup through Grade 6.</p>
+                        <a href="#" class="btn btn-outline btn-secondary btn-sm w-full"><i class="fas fa-download mr-2"></i>Download Form</a>
+                    </div>
+                </div>
+
+                <!-- Document Card -->
+                <div class="card bg-white shadow-lg border border-base-300 hover:shadow-2xl transition-all">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
+                                <i class="fas fa-book text-2xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="card-title text-gray-800">School Rules & Regulations</h3>
+                        <p class="text-sm text-gray-600 mb-4">Guidelines and expectations for students at Lofty Creek Christian School.</p>
+                        <a href="#" class="btn btn-outline btn-accent btn-sm w-full"><i class="fas fa-download mr-2"></i>Download Guide</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section class="py-20 bg-base-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-accent font-bold text-sm uppercase tracking-wider">Our Community</span>
+                <h2 class="text-4xl font-display font-bold text-primary mt-2">School Blogs & News</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Entry 1 -->
+                <div class="card bg-white shadow-xl hover:-translate-y-2 transition-transform duration-300 overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=400&fit=crop" alt="Students reading" class="w-full h-full object-cover">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                            <span><i class="far fa-calendar-alt mr-1"></i> Oct 12, 2023</span>
+                            <span>•</span>
+                            <span class="text-primary font-semibold">Academics</span>
+                        </div>
+                        <h3 class="card-title text-lg hover:text-primary transition-colors hover:cursor-pointer">Embracing the Competency-Based Curriculum</h3>
+                        <p class="text-sm text-gray-600 line-clamp-3">A deep dive into how Lofty Creek is perfectly positioned to deliver the Kenyan CBC framework alongside our Christian values.</p>
+                        <div class="card-actions justify-start mt-4">
+                            <button class="btn btn-link btn-sm text-primary p-0">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Entry 2 -->
+                <div class="card bg-white shadow-xl hover:-translate-y-2 transition-transform duration-300 overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop" alt="Gardening" class="w-full h-full object-cover">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                            <span><i class="far fa-calendar-alt mr-1"></i> Sep 28, 2023</span>
+                            <span>•</span>
+                            <span class="text-secondary font-semibold">Activities</span>
+                        </div>
+                        <h3 class="card-title text-lg hover:text-primary transition-colors hover:cursor-pointer">The Importance of Outdoor Learning</h3>
+                        <p class="text-sm text-gray-600 line-clamp-3">Why our gardening and environment programs are fundamental to holistic child development.</p>
+                        <div class="card-actions justify-start mt-4">
+                            <button class="btn btn-link btn-sm text-primary p-0">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Entry 3 -->
+                <div class="card bg-white shadow-xl hover:-translate-y-2 transition-transform duration-300 overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600&h=400&fit=crop" alt="Teacher reading to kids" class="w-full h-full object-cover">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                            <span><i class="far fa-calendar-alt mr-1"></i> Sep 15, 2023</span>
+                            <span>•</span>
+                            <span class="text-accent font-semibold">Events</span>
+                        </div>
+                        <h3 class="card-title text-lg hover:text-primary transition-colors hover:cursor-pointer">Welcome to the New Academic Year</h3>
+                        <p class="text-sm text-gray-600 line-clamp-3">Reflections from our School Director as we open our doors to another year of building character through education.</p>
+                        <div class="card-actions justify-start mt-4">
+                            <button class="btn btn-link btn-sm text-primary p-0">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button class="btn btn-outline btn-primary">Load More Articles</button>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

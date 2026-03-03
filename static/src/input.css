@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@source "../../templates/**/*.html";
+@source "../../public/templates/**/*.html";
+@source "../../core/templates/**/*.html";
+@source "../../sms/templates/**/*.html";

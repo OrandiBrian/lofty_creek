@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SMS Dashboard - LCCS{% endblock %}</title>
+    
+    <!-- Tailwind CSS & DaisyUI (CDN for standardizing) -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'img/logo_2.png' %}">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7B1F2E',      // Maroon/Burgundy
+                        'primary-focus': '#5A1620',
+                        secondary: '#1E3A5F',    // Navy Blue
+                        accent: '#F59E0B',       // Warm Amber
+                        'base-100': '#FFFBF5',   // Cream white
+                        'base-200': '#FDF6E3',   // Light cream
+                        'base-300': '#E8DCC8',   // Beige border
+                        success: '#059669',
+                        warning: '#D97706',
+                        error: '#DC2626',
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        display: ['Comic Neue', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom thin scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-base-200 text-base-content antialiased flex h-screen overflow-hidden">
+
+    <!-- Mobile Drawer Wrapper -->
+    <div class="drawer lg:drawer-open flex-1 w-full h-full">
+        <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <!-- Main Content Area -->
+        <div class="drawer-content flex flex-col h-screen overflow-y-auto w-full relative">
+            
+            <!-- Dashboard Top Navbar -->
+            <div class="navbar bg-white border-b border-base-200 sticky top-0 z-30 px-4 md:px-8">
+                <div class="flex-none lg:hidden">
+                    <label for="dashboard-drawer" class="btn btn-square btn-ghost">
+                        <i class="fas fa-bars text-xl"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-xl font-bold text-gray-800 font-display hidden sm:block"> {% block header_title %}Overview{% endblock %} </h1>
+                </div>
+                <div class="flex-none gap-4">
+                    <div class="flex items-center gap-2">
+                        <div class="avatar placeholder">
+                            <div class="bg-primary text-white rounded-full w-10">
+                                <span class="font-bold">{{ request.user.username|make_list|first|upper }}</span>
+                            </div>
+                        </div>
+                        <span class="font-bold text-sm hidden sm:block">{{ request.user.username }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Implementation -->
+            <main class="flex-1 pb-16" id="main-content">
+                <div id="page-content">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div> 
+        
+        <!-- Sidebar Drawer -->
+        <div class="drawer-side z-40 lg:z-50">
+            <label for="dashboard-drawer" class="drawer-overlay"></label> 
+            <aside class="w-72 bg-white h-full flex flex-col border-r border-base-200 shadow-sm">
+                <!-- Branding -->
+                <div class="p-4 md:p-5 border-b border-base-200">
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <img src="{% static 'img/logo_2.png' %}" alt="LCCS Logo" class="h-10 md:h-12 w-auto object-contain">
+                        <div class="flex flex-col">
+                            <span class="text-sm md:text-base font-display font-bold text-primary leading-tight">LCCS Hub</span>
+                            <span class="text-[10px] md:text-xs text-gray-500 font-medium">Administration</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="flex-1 overflow-y-auto py-4 md:py-6 px-3 md:px-4">
+                    <ul class="menu menu-md text-gray-600 gap-1 md:gap-2">
+                        <li class="menu-title text-gray-400 font-bold uppercase text-[10px] md:text-xs tracking-wider">SMS Communications</li>
+                        
+                        <li>
+                            <a href="{% url 'sms:overview' %}" data-nav="true" class="nav-link {% if request.resolver_match.url_name == 'overview' %}active bg-primary/10 text-primary font-bold{% else %}hover:bg-base-200{% endif %} rounded-xl py-2 md:py-3 text-sm">
+                                <i class="fas fa-home w-5 text-center"></i> <span class="hidden md:inline">Main </span>Overview
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'sms:compose' %}" data-nav="true" class="nav-link {% if request.resolver_match.url_name == 'compose' %}active bg-primary/10 text-primary font-bold{% else %}hover:bg-base-200{% endif %} rounded-xl py-2 md:py-3 text-sm">
+                                <i class="fas fa-paper-plane w-5 text-center"></i> Broadcast Hub
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'sms:templates' %}" data-nav="true" class="nav-link {% if request.resolver_match.url_name == 'templates' %}active bg-primary/10 text-primary font-bold{% else %}hover:bg-base-200{% endif %} rounded-xl py-2 md:py-3 text-sm">
+                                <i class="fas fa-file-alt w-5 text-center"></i> <span class="hidden md:inline">Message </span>Templates
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'sms:contacts' %}" data-nav="true" class="nav-link {% if request.resolver_match.url_name == 'contacts' or request.resolver_match.url_name == 'upload_contacts' %}active bg-primary/10 text-primary font-bold{% else %}hover:bg-base-200{% endif %} rounded-xl py-2 md:py-3 text-sm">
+                                <i class="fas fa-address-book w-5 text-center"></i> Contact Manager
+                            </a>
+                        </li>
+                        
+                        <div class="divider my-2"></div>
+                        <li class="menu-title text-gray-400 font-bold uppercase text-[10px] md:text-xs tracking-wider">System Settings</li>
+                        
+                        <li>
+                            <a href="/admin/" class="hover:bg-base-200 rounded-xl py-2 md:py-3 text-sm">
+                                <i class="fas fa-database w-5 text-center"></i> Core Database
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'public:index' %}" class="hover:bg-base-200 rounded-xl py-2 md:py-3 text-accent transition-colors font-medium text-sm">
+                                <i class="fas fa-external-link-alt w-5 text-center"></i> Visit Website
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Bottom Action -->
+                <div class="p-3 md:p-4 border-t border-base-200">
+                    <form method="POST" action="{% url 'admin:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline btn-error btn-sm md:btn-md w-full rounded-xl gap-2 font-bold">
+                            <i class="fas fa-sign-out-alt"></i> <span class="hidden md:inline">Secure </span>Logout
+                        </button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    {% block scripts %}{% endblock %}
+
+    <script>
+    (function() {
+        const pageContent = document.getElementById('page-content');
+        const mainContent = document.getElementById('main-content');
+        const headerTitle = document.querySelector('h1.font-display');
+
+        function setActiveLink(url) {
+            document.querySelectorAll('a.nav-link').forEach(link => {
+                const linkPath = new URL(link.href).pathname;
+                const currentPath = new URL(url, window.location.origin).pathname;
+                if (linkPath === currentPath) {
+                    link.classList.add('active', 'bg-primary/10', 'text-primary', 'font-bold');
+                    link.classList.remove('hover:bg-base-200');
+                } else {
+                    link.classList.remove('active', 'bg-primary/10', 'text-primary', 'font-bold');
+                    link.classList.add('hover:bg-base-200');
+                }
+            });
+        }
+
+        async function navigateTo(url) {
+            // Show loading state
+            pageContent.style.opacity = '0.4';
+            pageContent.style.transition = 'opacity 0.15s ease';
+
+            try {
+                const response = await fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const html = response.text ? await response.text() : '';
+
+                // Parse the fetched HTML and extract #page-content inner HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.getElementById('page-content');
+                const newTitle = doc.querySelector('h1.font-display');
+
+                if (newContent) {
+                    pageContent.innerHTML = newContent.innerHTML;
+
+                    // Update the top navbar title
+                    if (headerTitle && newTitle) {
+                        headerTitle.textContent = newTitle.textContent.trim();
+                    }
+
+                    // Update URL without reload
+                    history.pushState({ url }, '', url);
+                    setActiveLink(url);
+
+                    // Scroll content area to top
+                    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    // Re-run any inline scripts in the new content
+                    pageContent.querySelectorAll('script').forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
+                } else {
+                    // Fallback: full navigation if structure is unexpected
+                    window.location.href = url;
+                }
+            } catch (err) {
+                console.error('SPA navigation failed, falling back:', err);
+                window.location.href = url;
+            } finally {
+                pageContent.style.opacity = '1';
+            }
+        }
+
+        // Intercept sidebar nav link clicks
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[data-nav="true"]');
+            if (!link) return;
+            e.preventDefault();
+            navigateTo(link.href);
+        });
+
+        // Intercept Delete forms for smooth row removal
+        document.addEventListener('submit', async function(e) {
+            const form = e.target;
+            
+            // Handle Single Message Resend in Modal
+            if (form && form.classList.contains('ajax-resend-msg-form')) {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                const rowStatus = form.closest('tr').querySelector('td:nth-child(2)');
+                const originalBtnHtml = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                btn.disabled = true;
+                
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            rowStatus.innerHTML = '<span class="text-success font-semibold text-[10px] uppercase tracking-wide"><i class="fas fa-check"></i> ' + data.status + '</span>';
+                            form.remove(); // Remove the resend button since it succeeded
+                            return;
+                        } else {
+                            alert("Failed: " + data.error);
+                        }
+                    }
+                } catch (err) {
+                    console.error('Resend failed:', err);
+                }
+                
+                // Revert on fail
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+                return;
+            }
+
+            // Handle Campaign Deletes
+            if (form && form.action && form.action.includes('delete_campaign')) {
+                e.preventDefault();
+                
+                // Native onclick confirm already ran. If we're here, user clicked OK.
+                const row = form.closest('tr');
+                const btn = form.querySelector('button[type="submit"]');
+                if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && row) {
+                            row.style.opacity = '0';
+                            row.style.transform = 'scale(0.95)';
+                            row.style.transition = 'all 0.3s ease';
+                            setTimeout(() => {
+                                row.remove();
+                                // Optional: check if table is empty and insert empty state
+                                const tbody = document.querySelector('tbody');
+                                if (tbody && tbody.children.length === 0) {
+                                    tbody.innerHTML = '<tr><td colspan="5" class="text-center py-12 text-gray-400">All campaigns deleted.</td></tr>';
+                                }
+                            }, 300);
+                            return;
+                        }
+                    }
+                    // If JSON fails or false, fallback
+                    window.location.reload();
+                } catch (err) {
+                    console.error('AJAX Delete failed:', err);
+                    window.location.reload();
+                }
+            }
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(e) {
+            if (e.state && e.state.url) {
+                navigateTo(e.state.url);
+            }
+        });
+
+        // Record initial state
+        history.replaceState({ url: window.location.href }, '', window.location.href);
+    })();
+    </script>
+</body>
+</html>

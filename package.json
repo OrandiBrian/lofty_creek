@@ -1,0 +1,20 @@
+{
+  "name": "lccs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "autoprefixer": "^10.4.27",
+    "daisyui": "^5.5.19",
+    "postcss": "^8.5.9",
+    "tailwindcss": "^4.2.2"
+  }
+}

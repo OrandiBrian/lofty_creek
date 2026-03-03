@@ -1,0 +1,375 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #7B1F2E, #F59E0B);
+        }
+    </style>
+
+    <!-- Page Header -->
+    <section class="relative py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li class="text-accent">About Us</li>
+                </ul>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">About Our School</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">Discover our story, mission, and the values that drive us to provide exceptional Christian education.</p>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <div class="relative">
+                        <div class="absolute -top-4 -left-4 w-full h-full bg-accent/20 rounded-3xl"></div>
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=500&fit=crop" 
+                             alt="Children learning at Lofty Creek" 
+                             class="relative rounded-3xl shadow-2xl w-full object-cover h-[400px]">
+                        <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl max-w-xs">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-quote-left text-primary text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-primary">Psalm 127:3</p>
+                                    <p class="text-xs text-gray-600 italic">"Children are a heritage from the Lord"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 space-y-6">
+                    <span class="text-accent font-bold text-sm uppercase tracking-wider">Our Story</span>
+                    <h2 class="text-4xl font-display font-bold text-primary">Nurturing Heritage From God</h2>
+                    <div class="space-y-4 text-gray-600 leading-relaxed">
+                        <p>
+                            Lofty Creek Christian School is an integrated Edu-care center for children from all walks of life. We cater to children starting with the <strong class="text-primary">Kindergarten</strong> through <strong class="text-primary">Primary School Grade 6</strong>.
+                        </p>
+                        <p>
+                            Located <strong>along Wambaa road, 0.5km off the Nairobi-Nakuru Highway at Muthiga's Munyua road</strong>, we have established ourselves as a beacon of quality Christian education in the region.
+                        </p>
+                        <p>
+                            Designed with kids in mind, LCCS observes very high standards of learning with a holistic child development approach. Given the varied capabilities of our children, we have integrated <strong class="text-primary">Competency-Based and Montessori Curricula</strong>, all with a <strong class="text-primary">Christian worldview</strong>.
+                        </p>
+                    </div>
+                    <div class="bg-base-200 p-6 rounded-2xl border-l-4 border-primary">
+                        <p class="text-primary font-semibold italic">
+                            "At LCCS, your child will find a setting that is safe, welcoming and competent to enable them become the best they can be."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Cards -->
+    <section class="py-20 bg-base-200">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Mission -->
+                <div class="card bg-white shadow-xl hover:shadow-2xl transition-all group">
+                    <div class="card-body p-8">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                                <i class="fas fa-flag text-3xl text-primary group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h3 class="text-3xl font-display font-bold text-primary">Our Mission</h3>
+                        </div>
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                            To transform this generation through sound education with a distinctly <span class="text-primary font-bold">Christian worldview</span>. We take our responsibility as educators seriously and with deep reverence, nurturing children who will become an influence for good in the world.
+                        </p>
+                        <div class="mt-6 flex gap-2">
+                            <span class="badge badge-primary badge-outline">Transformation</span>
+                            <span class="badge badge-primary badge-outline">Christian Values</span>
+                            <span class="badge badge-primary badge-outline">Excellence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vision -->
+                <div class="card bg-white shadow-xl hover:shadow-2xl transition-all group">
+                    <div class="card-body p-8">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center group-hover:bg-secondary transition-colors">
+                                <i class="fas fa-eye text-3xl text-secondary group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h3 class="text-3xl font-display font-bold text-primary">Our Vision</h3>
+                        </div>
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                            To provide <span class="text-secondary font-bold">Bible-centered Christian education</span> preparing young people for service to God and Mankind. We envision raising a generation of leaders grounded in faith and equipped with knowledge.
+                        </p>
+                        <div class="mt-6 flex gap-2">
+                            <span class="badge badge-secondary badge-outline">Bible-Centered</span>
+                            <span class="badge badge-secondary badge-outline">Leadership</span>
+                            <span class="badge badge-secondary badge-outline">Service</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="py-20 bg-primary text-white relative overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-10"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-accent font-bold text-sm uppercase tracking-wider">What We Stand For</span>
+                <h2 class="text-4xl font-display font-bold mt-2 mb-4">Our Core Values</h2>
+                <p class="text-white/80">These principles guide every decision we make and every child we nurture.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 text-center hover:bg-white/20 transition-all">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl">
+                        <i class="fas fa-cross"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Faith</h3>
+                    <p class="text-sm text-white/80">Grounding all learning in Christian principles and biblical truth.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 text-center hover:bg-white/20 transition-all">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Love</h3>
+                    <p class="text-sm text-white/80">Creating a nurturing environment where every child feels valued.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 text-center hover:bg-white/20 transition-all">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Excellence</h3>
+                    <p class="text-sm text-white/80">Pursuing the highest standards in academics and character.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 text-center hover:bg-white/20 transition-all">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Community</h3>
+                    <p class="text-sm text-white/80">Building strong partnerships between school, home, and church.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extracurricular Activities -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-accent font-bold text-sm uppercase tracking-wider">Beyond the Classroom</span>
+                <h2 class="text-4xl font-display font-bold text-primary mt-2 mb-4">The Outdoors & Activities</h2>
+                <p class="text-gray-600">The extracurricular activities provided at Lofty Creek Christian School are calculated to positively influence a child's social life and academic performance.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Activity 1 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1560541919-eb5c3a31b805?w=400&h=300&fit=crop" 
+                             alt="Various Classes" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-flask text-primary"></i>
+                            </div>
+                            <h3 class="card-title text-primary">Various Classes</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Science, arts, and practical skills classes that cater to diverse interests and learning styles.</p>
+                    </div>
+                </div>
+
+                <!-- Activity 2 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop" 
+                             alt="Environment" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-leaf text-secondary"></i>
+                            </div>
+                            <h3 class="card-title text-primary">Environment</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Nature walks, environmental conservation projects, and outdoor learning experiences.</p>
+                    </div>
+                </div>
+
+                <!-- Activity 3 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop" 
+                             alt="Gardening" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-seedling text-accent"></i>
+                            </div>
+                            <h3 class="card-title text-primary">Gardening Class</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Hands-on gardening activities teaching responsibility, biology, and environmental stewardship.</p>
+                    </div>
+                </div>
+
+                <!-- Activity 4 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1514117445516-2ecfc9c4ec90?w=400&h=300&fit=crop" 
+                             alt="Music" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-primary"></i>
+                            </div>
+                            <h3 class="card-title text-primary">Music Programs</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Comprehensive music education including choir, instruments, and rhythmic activities for all ages.</p>
+                    </div>
+                </div>
+
+                <!-- Activity 5 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&h=300&fit=crop" 
+                             alt="Languages" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-language text-secondary"></i>
+                            </div>
+                            <h3 class="card-title text-primary">Foreign Languages</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Early exposure to foreign languages enhancing cognitive development and global awareness.</p>
+                    </div>
+                </div>
+
+                <!-- Activity 6 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" 
+                             alt="Fitness" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </figure>
+                    <div class="card-body">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-running text-accent"></i>
+                            </div>
+                            <h3 class="card-title text-primary">Fitness Programs</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Physical education, sports, and fitness activities promoting healthy lifestyles and teamwork.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team/Staff Section -->
+    <section class="py-20 bg-base-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-accent font-bold text-sm uppercase tracking-wider">Meet Our Team</span>
+                <h2 class="text-4xl font-display font-bold text-primary mt-2 mb-4">Dedicated Educators</h2>
+                <p class="text-gray-600">Our team of competent teachers is equipped with the skill, knowledge, wisdom, and enthusiasm required to leave a lasting impression on young minds.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Staff Member 1 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
+                    <figure class="px-6 pt-6">
+                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop" alt="Director" class="w-full h-full object-cover">
+                        </div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title text-primary">School Director</h3>
+                        <p class="text-sm text-accent font-semibold">Leadership & Vision</p>
+                        <p class="text-xs text-gray-500 mt-2">Guiding the school's mission with wisdom and dedication to Christian education.</p>
+                    </div>
+                </div>
+
+                <!-- Staff Member 2 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
+                    <figure class="px-6 pt-6">
+                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop" alt="Head Teacher" class="w-full h-full object-cover">
+                        </div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title text-primary">Head Teacher</h3>
+                        <p class="text-sm text-accent font-semibold">Academic Excellence</p>
+                        <p class="text-xs text-gray-500 mt-2">Ensuring high standards of curriculum implementation and teacher development.</p>
+                    </div>
+                </div>
+
+                <!-- Staff Member 3 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
+                    <figure class="px-6 pt-6">
+                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop" alt="Teacher" class="w-full h-full object-cover">
+                        </div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title text-primary">Class Teachers</h3>
+                        <p class="text-sm text-accent font-semibold">Primary Department</p>
+                        <p class="text-xs text-gray-500 mt-2">Passionate educators committed to nurturing each child's unique potential.</p>
+                    </div>
+                </div>
+
+                <!-- Staff Member 4 -->
+                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
+                    <figure class="px-6 pt-6">
+                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=200&h=200&fit=crop" alt="ECDE Teacher" class="w-full h-full object-cover">
+                        </div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title text-primary">ECDE Teachers</h3>
+                        <p class="text-sm text-accent font-semibold">Early Childhood</p>
+                        <p class="text-xs text-gray-500 mt-2">Specialized in Montessori and play-based learning for our youngest students.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-primary to-secondary text-white text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display font-bold mb-6">Ready to Join Our Community?</h2>
+            <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+                Visit our offices or send us an email to begin your child's journey at Lofty Creek Christian School.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'public:contact' %}" class="btn btn-accent btn-lg shadow-xl">
+                    <i class="fas fa-envelope mr-2"></i>Send Us a Message
+                </a>
+                <a href="{% url 'public:admissions' %}" class="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary">
+                    <i class="fas fa-info-circle mr-2"></i>Learn About Admissions
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

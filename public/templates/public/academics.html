@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        .curriculum-card {
+            transition: all 0.3s ease;
+        }
+        .curriculum-card:hover {
+            transform: translateY(-10px);
+        }
+    </style>
+
+    <!-- Page Header -->
+    <section class="relative py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li class="text-accent">Academics</li>
+                </ul>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">Academic Excellence</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">Providing a holistic, competency-based education rooted in foundational Christian principles.</p>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="lg:w-1/2 space-y-6">
+                    <span class="text-accent font-bold text-sm uppercase tracking-wider">Our Approach</span>
+                    <h2 class="text-4xl font-display font-bold text-primary">Integrating CBC with Christian Values</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        At Lofty Creek Christian School, our academic programs are carefully structured to align with the Kenyan Competency-Based Curriculum (CBC) while integrating robust Christian teachings. We focus on developing the whole child – mentally, physically, spiritually, and socially.
+                    </p>
+                    <div class="space-y-4 pt-4">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                <i class="fas fa-brain text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-primary">Critical Thinking</h4>
+                                <p class="text-sm text-gray-600">Encouraging students to ask questions, solve problems, and think creatively.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+                                <i class="fas fa-hands-helping text-secondary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-secondary">Practical Skills</h4>
+                                <p class="text-sm text-gray-600">Hands-on learning through activities, projects, and real-world applications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=400&fit=crop" class="rounded-3xl shadow-2xl relative z-10 w-full" alt="Students in class">
+                        <div class="absolute -top-6 -right-6 w-full h-full bg-accent/20 rounded-3xl z-0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Levels -->
+    <section class="py-20 bg-base-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-accent font-bold text-sm uppercase tracking-wider">Learning Levels</span>
+                <h2 class="text-4xl font-display font-bold text-primary mt-2">Comprehensive Educational Journey</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Kindergarten -->
+                <div class="card bg-white shadow-xl curriculum-card border-t-4 border-primary">
+                    <div class="card-body">
+                        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i class="fas fa-shapes text-3xl text-primary"></i>
+                        </div>
+                        <h3 class="text-3xl font-display font-bold text-primary mb-2">Early Years (ECDE)</h3>
+                        <p class="text-accent font-semibold mb-4">Playgroup, PP1, and PP2</p>
+                        <p class="text-gray-600 mb-6">
+                            Our kindergarten program heavily utilizes the Montessori method, emphasizing self-directed activity, hands-on learning, and collaborative play. Children are guided to make creative choices while discovering the world.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600 font-medium">
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Sensory learning & Motor skills</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Basic literacy and numeracy</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Social skills and values</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Primary School -->
+                <div class="card bg-white shadow-xl curriculum-card border-t-4 border-secondary">
+                    <div class="card-body">
+                        <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i class="fas fa-book-reader text-3xl text-secondary"></i>
+                        </div>
+                        <h3 class="text-3xl font-display font-bold text-primary mb-2">Primary School</h3>
+                        <p class="text-accent font-semibold mb-4">Grade 1 through Grade 6</p>
+                        <p class="text-gray-600 mb-6">
+                            Implementing the full Competency-Based Curriculum (CBC), our primary school prepares students to be engaged, empowered, and ethical citizens. We focus on continuous assessment over summative grading.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600 font-medium">
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Core CBC subjects & continuous assessment</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Digital literacy & practical arts</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Christian Religious Education</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subjects Matrix -->
+    <section class="py-20 bg-primary text-white relative overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-10"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-3xl font-display font-bold mb-10">Core Subjects & Competencies</h2>
+            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-language mr-2 text-accent"></i>Languages (Eng & Kiswahili)</span>
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-square-root-alt mr-2 text-accent"></i>Mathematics</span>
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-flask mr-2 text-accent"></i>Environmental Science</span>
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-cross mr-2 text-accent"></i>CRE</span>
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-laptop mr-2 text-accent"></i>Digital Literacy</span>
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-palette mr-2 text-accent"></i>Creative Arts</span>
+                <span class="px-6 py-3 rounded-full bg-white/10 border border-white/30 backdrop-blur font-semibold"><i class="fas fa-running mr-2 text-accent"></i>Physical Education</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support and Resources -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row-reverse gap-12 items-center">
+                <div class="lg:w-1/2 space-y-6">
+                    <span class="text-accent font-bold text-sm uppercase tracking-wider">Student Support</span>
+                    <h2 class="text-4xl font-display font-bold text-primary">Empowering Every Learner</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        We understand that every child learns differently. Our teachers are trained to identify and nurture individual talents, providing personalized support when needed to ensure no child is left behind.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex gap-4">
+                            <i class="fas fa-user-check text-success text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Small Class Sizes</h4>
+                                <p class="text-sm text-gray-600">Ensuring a low teacher-to-student ratio for maximum individual attention.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <i class="fas fa-book-reader text-success text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Reading Programs</h4>
+                                <p class="text-sm text-gray-600">Dedicated libraries and reading clubs to foster a lifelong love for reading.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <i class="fas fa-pray text-success text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Spiritual Mentorship</h4>
+                                <p class="text-sm text-gray-600">Daily devotions and pastoral program complementing academic study.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" class="rounded-3xl shadow-xl w-full" alt="Students reviewing work">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-primary to-secondary text-white text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display font-bold mb-6">Invest in Your Child's Academic Future</h2>
+            <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+                Join an institution that prioritizes academic excellence, godly character, and practical competencies.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'public:admissions' %}" class="btn btn-accent btn-lg shadow-xl">
+                    <i class="fas fa-file-signature mr-2"></i>Apply for Admission
+                </a>
+                <a href="{% url 'public:contact' %}" class="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary">
+                    <i class="fas fa-phone mr-2"></i>Contact Admissions Team
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
