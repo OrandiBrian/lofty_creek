@@ -10,3 +10,8 @@ python manage.py migrate --noinput
 
 # Collect static files
 python manage.py collectstatic --noinput
+
+# Create superuser if DJANGO_SUPERUSER_USERNAME is set
+if [ "$DJANGO_SUPERUSER_USERNAME" ]; then
+  python manage.py createsuperuser --noinput || true
+fi
