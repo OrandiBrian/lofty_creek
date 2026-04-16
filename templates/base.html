@@ -66,50 +66,70 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="navbar bg-white shadow-lg sticky top-0 z-50 px-4 lg:px-8">
-        <div class="container mx-auto">
-            <div class="navbar-start">
-                <a href="{% url 'public:index' %}" class="flex items-center gap-2 md:gap-3">
-                    <img src="{% static 'img/logo_2.png' %}" alt="Lofty Creek Christian School Logo" class="h-10 md:h-14 w-auto object-contain">
-                    <span class="hidden md:block text-primary font-bold font-display text-base md:text-lg leading-tight">Lofty Creek<br>Christian School</span>
-                </a>
-            </div>
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1 gap-1">
-                    <li><a href="{% url 'public:index' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'index' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Home</a></li>
-                    <li><a href="{% url 'public:about' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'about' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">About</a></li>
-                    <li><a href="{% url 'public:academics' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'academics' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Academics</a></li>
-                    <li><a href="{% url 'public:admissions' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'admissions' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Admissions</a></li>
-                    <li><a href="{% url 'public:events' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'events' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Events</a></li>
-                    <li><a href="{% url 'public:gallery' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'gallery' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Gallery</a></li>
-                    <li><a href="{% url 'public:resources' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'resources' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Resources</a></li>
-                    <li><a href="{% url 'public:contact' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'contact' %}btn-primary text-white{% else %}btn-ghost hover:bg-primary hover:text-white{% endif %}">Contact</a></li>
-                </ul>
-            </div>
-            <div class="navbar-end lg:border-l lg:border-gray-200 lg:pl-4 lg:ml-4 flex-none">
-                <div class="dropdown dropdown-end lg:hidden">
-                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                        <i class="fas fa-bars text-2xl text-primary"></i>
-                    </div>
-                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 right-0">
-                        <li><a href="{% url 'public:index' %}" class="{% if request.resolver_match.url_name == 'index' %}text-primary font-bold{% endif %}">Home</a></li>
-                        <li><a href="{% url 'public:about' %}" class="{% if request.resolver_match.url_name == 'about' %}text-primary font-bold{% endif %}">About Us</a></li>
-                        <li><a href="{% url 'public:academics' %}" class="{% if request.resolver_match.url_name == 'academics' %}text-primary font-bold{% endif %}">Academics</a></li>
-                        <li><a href="{% url 'public:admissions' %}" class="{% if request.resolver_match.url_name == 'admissions' %}text-primary font-bold{% endif %}">Admissions</a></li>
-                        <li><a href="{% url 'public:events' %}" class="{% if request.resolver_match.url_name == 'events' %}text-primary font-bold{% endif %}">Events</a></li>
-                        <li><a href="{% url 'public:gallery' %}" class="{% if request.resolver_match.url_name == 'gallery' %}text-primary font-bold{% endif %}">Gallery</a></li>
-                        <li><a href="{% url 'public:resources' %}" class="{% if request.resolver_match.url_name == 'resources' %}text-primary font-bold{% endif %}">Resources</a></li>
-                        <li><a href="{% url 'public:contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}text-primary font-bold{% endif %}">Contact Us</a></li>
-                        <li class="border-t border-gray-200 mt-2 pt-2">
-                            <a href="{% url 'admin:login' %}" class="text-primary font-bold">
-                                <i class="fas fa-user-shield mr-2"></i>Admin Login
-                            </a>
-                        </li>
-                    </ul>
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20 md:h-24">
+                <!-- Brand / Logo -->
+                <div class="flex-shrink-0">
+                    <a href="{% url 'public:index' %}" class="flex items-center gap-3 group">
+                        <div class="relative">
+                            <img src="{% static 'img/logo_2.png' %}" alt="LCCS Logo" class="h-14 md:h-18 w-auto transform transition-transform group-hover:scale-110 duration-300">
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-primary font-bold font-display text-xl md:text-2xl leading-none">Lofty Creek</span>
+                            <span class="text-secondary font-bold text-[10px] md:text-xs tracking-[0.2em] uppercase mt-1">Christian School</span>
+                        </div>
+                    </a>
                 </div>
-                <a href="{% url 'admin:login' %}" class="btn btn-outline btn-primary btn-sm hidden lg:inline-flex">
-                    <i class="fas fa-user-shield mr-1 md:mr-2"></i>Admin Login
-                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    {% with url_name=request.resolver_match.url_name %}
+                    <a href="{% url 'public:index' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'index' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Home</a>
+                    <a href="{% url 'public:about' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'about' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">About Us</a>
+                    <a href="{% url 'public:academics' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'academics' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Academics</a>
+                    <a href="{% url 'public:admissions' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'admissions' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Admissions</a>
+                    <a href="{% url 'public:events' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'events' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Events</a>
+                    <a href="{% url 'public:gallery' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'gallery' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Gallery</a>
+                    <a href="{% url 'public:resources' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'resources' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Resources</a>
+                    <a href="{% url 'public:contact' %}" class="px-3 py-2 rounded-md text-sm font-bold transition-all {% if url_name == 'contact' %}text-primary bg-primary/5{% else %}text-gray-600 hover:text-primary hover:bg-gray-50{% endif %}">Contact</a>
+                    {% endwith %}
+                </nav>
+
+                <!-- Action Button -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <div class="h-8 w-px bg-gray-200"></div>
+                    <a href="{% url 'admin:login' %}" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-primary to-secondary group-hover:from-primary group-hover:to-secondary hover:text-white focus:ring-4 focus:outline-none focus:ring-primary/20">
+                        <span class="relative px-5 py-2 transition-all ease-in duration-75 bg-white rounded-full group-hover:bg-opacity-0">
+                            <i class="fas fa-user-shield mr-2"></i>Admin Portal
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu (DaisyUI) -->
+                <div class="lg:hidden flex items-center">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                        </label>
+                        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-xl bg-white rounded-box w-64 border border-gray-100">
+                            <li><a href="{% url 'public:index' %}" class="py-3 font-bold text-primary"><i class="fas fa-home w-6"></i>Home</a></li>
+                            <li><a href="{% url 'public:about' %}" class="py-3 font-bold"><i class="fas fa-info-circle w-6"></i>About Us</a></li>
+                            <li><a href="{% url 'public:academics' %}" class="py-3 font-bold"><i class="fas fa-graduation-cap w-6"></i>Academics</a></li>
+                            <li><a href="{% url 'public:admissions' %}" class="py-3 font-bold"><i class="fas fa-user-plus w-6"></i>Admissions</a></li>
+                            <li><a href="{% url 'public:events' %}" class="py-3 font-bold"><i class="fas fa-calendar-alt w-6"></i>Events</a></li>
+                            <li><a href="{% url 'public:gallery' %}" class="py-3 font-bold"><i class="fas fa-images w-6"></i>Gallery</a></li>
+                            <li><a href="{% url 'public:resources' %}" class="py-3 font-bold"><i class="fas fa-book w-6"></i>Resources</a></li>
+                            <li><a href="{% url 'public:contact' %}" class="py-3 font-bold"><i class="fas fa-envelope w-6"></i>Contact Us</a></li>
+                            <div class="divider my-1"></div>
+                            <li>
+                                <a href="{% url 'admin:login' %}" class="bg-primary text-white hover:bg-primary-focus py-3 font-bold justify-center rounded-lg">
+                                    <i class="fas fa-lock mr-2"></i>Admin Login
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
