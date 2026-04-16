@@ -33,11 +33,22 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Render uses a proxy that handles SSL termination.
+# This setting tells Django to trust the HTTP_X_FORWARDED_PROTO header.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://lofty-creek.onrender.com',
 ]
+
+# Add any additional origins from environment variables
+env_trusted_origins = os.getenv('CSRF_TRUSTED_ORIGINS')
+if env_trusted_origins:
+    CSRF_TRUSTED_ORIGINS.extend(env_trusted_origins.split(','))
+else:
+    # Default Render URL if not explicitly provided
+    CSRF_TRUSTED_ORIGINS.append('https://lofty-creek.onrender.com')
 
 
 # Application definition
@@ -151,7 +162,7 @@ STORAGES = {
     },
 }
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
