@@ -6,7 +6,6 @@ africastalking>=1.2
 python-dotenv>=1.0
 pillow>=10.2
 gunicorn>=21.2
-django-compressor>=4.4
 coverage>=7.4
 openpyxl>=3.1.5
 django-jazzmin>=2.6
