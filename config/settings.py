@@ -29,7 +29,8 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_summernote',
     'public',
     'core',
     'sms',
@@ -177,6 +179,10 @@ CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_HTTPONLY = False
 CSRF_USE_SESSIONS = False
 
+LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/admin/'
+LOGOUT_REDIRECT_URL = '/'
+
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 31536000
@@ -225,6 +231,10 @@ JAZZMIN_SETTINGS = {
     # Order the sidebar apps and models explicitly
     "order_with_respect_to": [
         "auth",
+        "public",
+        "public.BlogPost",
+        "public.GalleryPhoto",
+        "public.ContactMessage",
         "core",
         "core.Contact",
         "core.ContactGroup",
@@ -266,6 +276,9 @@ JAZZMIN_SETTINGS = {
         "auth":                        "fas fa-users-cog",
         "auth.user":                   "fas fa-user",
         "auth.Group":                  "fas fa-layer-group",
+        "public.BlogPost":             "fas fa-blog",
+        "public.GalleryPhoto":         "fas fa-images",
+        "public.ContactMessage":       "fas fa-envelope-open-text",
         "core.Contact":                "fas fa-address-card",
         "core.ContactGroup":           "fas fa-users",
         "core.SMSTemplate":            "fas fa-file-alt",
@@ -324,3 +337,47 @@ JAZZMIN_UI_TWEAKS = {
         "success":   "btn-success",
     },
 }
+
+# ---------------------------------------------------------------------------
+# Logging Configuration
+# ---------------------------------------------------------------------------
+LOGS_DIR = BASE_DIR / 'logs'
+os.makedirs(LOGS_DIR, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '{levelname} {asctime} [{module}] {message}',
+            'style': '{',
+        },
+        'sms_format': {
+            'format': '%(asctime)s [%(levelname)s] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'sms_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'sms_campaigns.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'sms_format',
+        },
+    },
+    'loggers': {
+        'sms': {
+            'handlers': ['console', 'sms_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+

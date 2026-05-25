@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('summernote/', include('django_summernote.urls')),
     path('', include('public.urls', namespace='public')),
     path('sms/', include('sms.urls', namespace='sms')),
 ]

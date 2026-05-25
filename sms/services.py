@@ -1,8 +1,11 @@
 from __future__ import print_function
 
+import logging
 import africastalking
 from django.conf import settings
 from .models import SMSMessage
+
+logger = logging.getLogger('sms')
 
 
 class SMS:
@@ -50,6 +53,7 @@ class SMS:
         if not recipients_set:
             campaign.status = 'FAILED'
             campaign.save()
+            logger.warning(f"Aborting Campaign '{campaign.name}' (ID: {campaign.id}): No valid recipients found.")
             return {"error": "No valid recipients found."}
 
         # Set the numbers to send to in international format
@@ -58,13 +62,16 @@ class SMS:
         if not recipients:
             campaign.status = 'FAILED'
             campaign.save()
+            logger.warning(f"Aborting Campaign '{campaign.name}' (ID: {campaign.id}): No valid phone numbers found among resolved recipients.")
             return {"error": "No valid phone numbers found among recipients."}
 
         # Set your message
         message = campaign.message_body
+        logger.info(f"Resolved {len(recipients)} unique recipient phone numbers for Campaign '{campaign.name}' (ID: {campaign.id}). Message preview: '{message[:50]}...'")
 
         try:
             # Hit send and Africa's Talking takes care of the rest
+            logger.info(f"Sending Campaign '{campaign.name}' (ID: {campaign.id}) to {len(recipients)} recipients via Africa's Talking API...")
             if self.sender_id:
                 response = self.sms.send(message, recipients, self.sender_id)
             else:
@@ -108,12 +115,15 @@ class SMS:
             campaign.status = 'SENT' if success_count > 0 else 'FAILED'
             campaign.save()
 
+            logger.info(f"Successfully processed Campaign '{campaign.name}' (ID: {campaign.id}). Dispatch status: {campaign.status}. Success count: {success_count}/{len(recipients)}, Total Cost: {total_cost}")
             return {"success": f"Sent {success_count} messages successfully out of {len(recipients)}."}
 
         except Exception as e:
             campaign.status = 'FAILED'
             campaign.save()
+            logger.error(f"Encountered exception while sending Campaign '{campaign.name}' (ID: {campaign.id}): {str(e)}", exc_info=True)
             return {"error": "Encountered an error while sending: %s" % str(e)}
+
 
 
 def send_bulk_sms(campaign):

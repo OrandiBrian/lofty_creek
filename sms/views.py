@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+import logging
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -12,6 +13,8 @@ from .services import send_bulk_sms, SMS
 import openpyxl
 
 from django.db.models import Sum
+
+logger = logging.getLogger('sms')
 
 
 def sms_login(request):
@@ -388,7 +391,9 @@ def delivery_report(request):
         # Africa's Talking sends these parameters
         message_id = request.POST.get('id')
         status = request.POST.get('status')
-        # failure_reason = request.POST.get('failureReason')
+        failure_reason = request.POST.get('failureReason', '')
+        
+        logger.info(f"Incoming Delivery Report Webhook: AT_ID='{message_id}', Status='{status}', FailureReason='{failure_reason}'")
         
         if message_id and status:
             try:
@@ -396,6 +401,7 @@ def delivery_report(request):
                 msg = SMSMessage.objects.get(at_message_id=message_id)
                 
                 # Check Africa's Talking statuses and map to our internal ones
+                old_status = msg.status
                 if status == 'Success':
                     msg.status = 'SENT'
                 elif status == 'Delivered':
@@ -405,9 +411,12 @@ def delivery_report(request):
                     msg.status = 'FAILED'
                 
                 msg.save()
+                logger.info(f"Successfully updated SMS message status from '{old_status}' to '{msg.status}' for Contact '{msg.contact.name}' ({msg.contact.phone_number}), Campaign '{msg.campaign.name}' (ID: {msg.campaign.id}), Message ID: {msg.id}")
             except SMSMessage.DoesNotExist:
-                # Message not found or a test payload
-                pass
+                logger.warning(f"No matching SMSMessage record found for AT Message ID '{message_id}'. Possible test payload or unsaved record.")
+            except Exception as e:
+                logger.error(f"Failed to process delivery report callback for AT Message ID '{message_id}': {str(e)}", exc_info=True)
                 
     # Always respond with 200 OK so AT knows we received it
     return HttpResponse('OK', status=200)
+

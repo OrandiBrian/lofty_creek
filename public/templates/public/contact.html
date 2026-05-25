@@ -114,49 +114,50 @@
                             <h3 class="text-3xl font-display font-bold text-primary mb-2">Send us a Message</h3>
                             <p class="text-gray-500 mb-8">Fill out the form below and we will get back to you as soon as possible.</p>
                             
-                            <form class="space-y-6">
+                            <form id="contact-form" method="POST" action="{% url 'public:contact' %}" class="space-y-6" novalidate>
                                 {% csrf_token %}
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="form-control">
                                         <label class="label"><span class="label-text font-semibold text-gray-700">First Name</span></label>
-                                        <input type="text" placeholder="John" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
+                                        <input type="text" name="first_name" placeholder="John" class="input input-bordered focus:border-primary text-slate-200 focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
                                     </div>
                                     <div class="form-control">
                                         <label class="label"><span class="label-text font-semibold text-gray-700">Last Name</span></label>
-                                        <input type="text" placeholder="Doe" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
+                                        <input type="text" name="last_name" placeholder="Doe" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 text-slate-200 transition-all rounded-xl" required />
                                     </div>
                                 </div>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="form-control">
                                         <label class="label"><span class="label-text font-semibold text-gray-700">Email Address</span></label>
-                                        <input type="email" placeholder="john@example.com" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" required />
+                                        <input type="email" name="email" placeholder="john@example.com" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 text-slate-200 transition-all rounded-xl" required />
                                     </div>
                                     <div class="form-control">
                                         <label class="label"><span class="label-text font-semibold text-gray-700">Phone Number</span></label>
-                                        <input type="tel" placeholder="+254 XXX XXX XXX" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl" />
+                                        <input type="tel" name="phone_number" placeholder="+254 XXX XXX XXX" class="input input-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 text-slate-200 transition-all rounded-xl" />
                                     </div>
                                 </div>
                                 
                                 <div class="form-control">
                                     <label class="label"><span class="label-text font-semibold text-gray-700">Subject</span></label>
-                                    <select class="select select-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-xl">
+                                    <select name="subject" class="select select-bordered focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 text-slate-200 transition-all rounded-xl">
                                         <option disabled selected>How can we help you?</option>
-                                        <option>Admissions Inquiry</option>
-                                        <option>General Inquiry</option>
-                                        <option>Feedback / Suggestion</option>
-                                        <option>Careers</option>
+                                        <option value="Admissions Inquiry">Admissions Inquiry</option>
+                                        <option value="General Inquiry">General Inquiry</option>
+                                        <option value="Feedback / Suggestion">Feedback / Suggestion</option>
+                                        <option value="Careers">Careers</option>
                                     </select>
                                 </div>
                                 
                                 <div class="form-control">
                                     <label class="label"><span class="label-text font-semibold text-gray-700">Your Message</span></label>
-                                    <textarea placeholder="Write your message here..." class="textarea textarea-bordered h-36 focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 transition-all rounded-2xl" required></textarea>
+                                    <textarea name="message" placeholder="Write your message here..." class="textarea textarea-bordered h-36 focus:border-primary focus:ring-2 focus:ring-primary/20 w-full bg-base-50 text-slate-200 transition-all rounded-2xl" required></textarea>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-primary w-full shadow-lg shadow-primary/30 mt-4 h-14 text-lg rounded-xl">
-                                    <i class="fas fa-paper-plane mr-2"></i> Send Message
+                                <button id="submit-btn" type="submit" class="btn btn-primary w-full shadow-lg shadow-primary/30 mt-4 h-14 text-lg rounded-xl">
+                                    <i class="fas fa-paper-plane mr-2"></i>
+                                    <span id="btn-text">Send Message</span>
                                 </button>
                             </form>
                         </div>
@@ -168,3 +169,85 @@
     </section>
 
 {% endblock content %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+    var form = document.getElementById('contact-form');
+    var submitBtn = document.getElementById('submit-btn');
+    var btnText = document.getElementById('btn-text');
+
+    function showToast(message, type) {
+        // Remove any existing toast
+        var existing = document.getElementById('ajax-toast');
+        if (existing) existing.remove();
+
+        var iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        var alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+
+        var toast = document.createElement('div');
+        toast.id = 'ajax-toast';
+        toast.style.cssText = 'position:fixed;top:5rem;right:1.5rem;z-index:9999;max-width:22rem;display:flex;flex-direction:column;gap:0.5rem;transition:opacity 0.5s ease;';
+        toast.innerHTML = '<div class="alert ' + alertClass + ' shadow-lg rounded-xl flex items-center gap-3 text-white"><i class="fas ' + iconClass + ' text-xl flex-shrink-0"></i><span class="font-semibold text-sm leading-snug">' + message + '</span></div>';
+        document.body.appendChild(toast);
+
+        setTimeout(function () {
+            toast.style.opacity = '0';
+            setTimeout(function () { toast.remove(); }, 500);
+        }, 5000);
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Basic HTML5 validation
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.textContent = 'Sending…';
+
+        var data = new FormData(form);
+
+        // Read CSRF token from cookie for AJAX header
+        function getCsrfToken() {
+            var name = 'csrftoken=';
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var c = cookies[i].trim();
+                if (c.indexOf(name) === 0) return c.substring(name.length);
+            }
+            return '';
+        }
+
+        fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCsrfToken()
+            }
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (json) {
+            if (json.status === 'ok') {
+                showToast('Message sent successfully! We will reach out to you shortly.', 'success');
+                form.reset();
+            } else {
+                showToast('Something went wrong. Please try again.', 'error');
+            }
+        })
+        .catch(function () {
+            showToast('Network error. Please check your connection and try again.', 'error');
+        })
+        .finally(function () {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Send Message';
+        });
+    });
+})();
+</script>
+{% endblock extra_scripts %}

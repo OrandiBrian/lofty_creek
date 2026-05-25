@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="relative py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+        <div class="absolute inset-0 hero-pattern opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="text-sm breadcrumbs text-white/70 justify-center mb-4">
+                <ul>
+                    <li><a href="{% url 'public:index' %}" class="hover:text-accent">Home</a></li>
+                    <li><a href="{% url 'public:resources' %}" class="hover:text-accent">Resources</a></li>
+                    <li class="text-accent">{{ post.title|truncatewords:6 }}</li>
+                </ul>
+            </div>
+            <span class="inline-block bg-accent/20 text-accent font-bold text-xs uppercase tracking-widest px-4 py-1 rounded-full mb-4">
+                {{ post.get_category_display }}
+            </span>
+            <h1 class="text-4xl md:text-5xl font-display font-bold text-white mb-4 max-w-3xl mx-auto">{{ post.title }}</h1>
+            <div class="flex items-center justify-center gap-4 text-white/70 text-sm mt-4">
+                <span><i class="far fa-user mr-1"></i>{{ post.author }}</span>
+                <span>•</span>
+                <span><i class="far fa-calendar-alt mr-1"></i>{{ post.created_at|date:"F d, Y" }}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Body -->
+    <section class="py-16 bg-base-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
+
+                <!-- Main Content -->
+                <article class="flex-1 min-w-0">
+                    <!-- Cover Image -->
+                    {% if post.cover_image %}
+                        <div class="rounded-2xl overflow-hidden shadow-xl mb-10">
+                            <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full object-cover max-h-96">
+                        </div>
+                    {% endif %}
+
+                    <!-- Article Content -->
+                    <style>
+                        .blog-content { color: #374151; font-size: 1.0625rem; line-height: 1.85; }
+                        .blog-content h1 { font-size: 2rem;    font-weight: 800; color: #7B1F2E; margin: 2rem 0 1rem; font-family: 'Comic Neue', cursive; }
+                        .blog-content h2 { font-size: 1.6rem;  font-weight: 800; color: #7B1F2E; margin: 1.75rem 0 0.875rem; font-family: 'Comic Neue', cursive; }
+                        .blog-content h3 { font-size: 1.3rem;  font-weight: 700; color: #7B1F2E; margin: 1.5rem 0 0.75rem;  font-family: 'Comic Neue', cursive; }
+                        .blog-content h4 { font-size: 1.1rem;  font-weight: 700; color: #1E3A5F; margin: 1.25rem 0 0.625rem; }
+                        .blog-content h5,
+                        .blog-content h6 { font-size: 1rem;    font-weight: 700; color: #1E3A5F; margin: 1rem 0 0.5rem; }
+                        .blog-content p  { margin: 0 0 1.25rem; }
+                        .blog-content a  { color: #7B1F2E; text-decoration: underline; }
+                        .blog-content a:hover { color: #5A1620; }
+                        .blog-content strong, .blog-content b { font-weight: 700; color: #111827; }
+                        .blog-content em, .blog-content i { font-style: italic; }
+                        .blog-content u  { text-decoration: underline; }
+                        .blog-content s, .blog-content del { text-decoration: line-through; }
+                        .blog-content ul { list-style-type: disc;    padding-left: 1.75rem; margin: 0 0 1.25rem; }
+                        .blog-content ol { list-style-type: decimal; padding-left: 1.75rem; margin: 0 0 1.25rem; }
+                        .blog-content li { margin-bottom: 0.4rem; }
+                        .blog-content blockquote {
+                            border-left: 4px solid #7B1F2E;
+                            background: #FDF6E3;
+                            border-radius: 0.5rem;
+                            padding: 1rem 1.5rem;
+                            margin: 1.5rem 0;
+                            font-style: italic;
+                            color: #4B5563;
+                        }
+                        .blog-content pre {
+                            background: #1E3A5F;
+                            color: #e5e7eb;
+                            border-radius: 0.75rem;
+                            padding: 1.25rem;
+                            overflow-x: auto;
+                            margin: 1.5rem 0;
+                            font-size: 0.9rem;
+                        }
+                        .blog-content code {
+                            background: #E8DCC8;
+                            color: #7B1F2E;
+                            padding: 0.15em 0.4em;
+                            border-radius: 0.3rem;
+                            font-size: 0.875em;
+                        }
+                        .blog-content pre code { background: transparent; color: inherit; padding: 0; }
+                        .blog-content img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 0.75rem;
+                            margin: 1.5rem 0;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                        }
+                        .blog-content table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 1.5rem 0;
+                            font-size: 0.95rem;
+                        }
+                        .blog-content th {
+                            background: #7B1F2E;
+                            color: white;
+                            padding: 0.75rem 1rem;
+                            text-align: left;
+                            font-weight: 700;
+                        }
+                        .blog-content td {
+                            padding: 0.65rem 1rem;
+                            border-bottom: 1px solid #E8DCC8;
+                        }
+                        .blog-content tr:nth-child(even) td { background: #FFFBF5; }
+                        .blog-content hr {
+                            border: none;
+                            border-top: 2px solid #E8DCC8;
+                            margin: 2rem 0;
+                        }
+                    </style>
+                    <div class="blog-content">
+                        {{ post.content|safe }}
+                    </div>
+
+                    <!-- Back Button -->
+                    <div class="mt-12 pt-8 border-t border-base-300">
+                        <a href="{% url 'public:resources' %}" class="btn btn-outline btn-primary rounded-xl">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Resources
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Sidebar -->
+                <aside class="lg:w-80 flex-shrink-0">
+                    <!-- About the Author -->
+                    <div class="card bg-white shadow-lg border border-base-200 mb-8">
+                        <div class="card-body">
+                            <h4 class="font-display font-bold text-primary text-lg mb-3">
+                                <i class="fas fa-user-circle mr-2"></i>About the Author
+                            </h4>
+                            <p class="text-sm text-gray-600">
+                                <span class="font-semibold text-gray-800">{{ post.author }}</span>
+                                &mdash; a member of the Lofty Creek Christian School team, sharing insights and updates from our community.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- More Articles -->
+                    {% if recent %}
+                        <div class="card bg-white shadow-lg border border-base-200">
+                            <div class="card-body">
+                                <h4 class="font-display font-bold text-primary text-lg mb-4">
+                                    <i class="fas fa-newspaper mr-2"></i>More Articles
+                                </h4>
+                                <div class="space-y-4">
+                                    {% for r in recent %}
+                                        <a href="{% url 'public:blog_detail' r.slug %}" class="flex gap-3 group">
+                                            <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-base-200">
+                                                {% if r.cover_image %}
+                                                    <img src="{{ r.cover_image.url }}" alt="{{ r.title }}" class="w-full h-full object-cover">
+                                                {% else %}
+                                                    <div class="w-full h-full flex items-center justify-center">
+                                                        <i class="fas fa-newspaper text-2xl text-primary/30"></i>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-xs text-gray-400 mb-1">{{ r.created_at|date:"M d, Y" }}</p>
+                                                <p class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors line-clamp-2">{{ r.title }}</p>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </aside>
+
+            </div>
+        </div>
+    </section>
+{% endblock content %}

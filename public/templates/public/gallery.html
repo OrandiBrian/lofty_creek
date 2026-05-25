@@ -20,110 +20,92 @@
     <!-- Gallery Section -->
     <section class="py-20 bg-base-100">
         <div class="container mx-auto px-4">
-            
-            <!-- Filters (Decorative / Functional if JS added) -->
-            <div class="flex flex-wrap justify-center gap-2 mb-12">
-                <button class="btn btn-primary btn-sm md:btn-md rounded-full shadow-md">All</button>
-                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Campus</button>
-                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Academics</button>
-                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Events</button>
-                <button class="btn btn-outline btn-sm md:btn-md rounded-full hover:bg-primary hover:text-white hover:border-primary border-gray-300 text-gray-600">Sports</button>
-            </div>
 
-            <!-- Grid Layout -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                
-                <!-- Image Item 1 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <img src="https://images.unsplash.com/photo-1546410531-bda9ae9c890a?w=600&h=450&fit=crop" alt="Students in Classroom" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-primary mb-2 w-max border-none">Academics</span>
-                        <h3 class="text-white font-bold text-xl">Interactive Learning</h3>
-                        <p class="text-white/80 text-sm">Our students engaged in group discussions.</p>
-                    </div>
+            {% if photos %}
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 mb-12">
+                    <button class="filter-btn btn btn-primary btn-sm md:btn-md rounded-full shadow-md" data-filter="all">All</button>
+                    {% for cat in categories %}
+                        <button class="filter-btn btn btn-outline btn-sm md:btn-md rounded-full border-gray-300 text-gray-600 hover:bg-primary hover:text-white hover:border-primary"
+                                data-filter="{{ cat|lower }}">{{ cat }}</button>
+                    {% endfor %}
                 </div>
 
-                <!-- Image Item 2 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&h=450&fit=crop" alt="School Environment" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-secondary mb-2 w-max border-none text-white">Campus</span>
-                        <h3 class="text-white font-bold text-xl">Our Beautiful Campus</h3>
-                        <p class="text-white/80 text-sm">A serene environment conducive for learning.</p>
-                    </div>
+                <!-- Grid -->
+                <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {% for photo in photos %}
+                        <div class="gallery-item group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 cursor-pointer"
+                             data-category="{{ photo.category }}"
+                             data-src="{{ photo.image.url }}"
+                             data-title="{{ photo.title }}"
+                             data-desc="{{ photo.description }}"
+                             onclick="openLightbox(this)">
+                            <img src="{{ photo.image.url }}"
+                                 alt="{{ photo.title }}"
+                                 class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <span class="badge badge-primary mb-2 w-max border-none text-xs uppercase tracking-wider">
+                                    {{ photo.get_category_display }}
+                                </span>
+                                <h3 class="text-white font-bold text-lg leading-snug">{{ photo.title }}</h3>
+                                {% if photo.description %}
+                                    <p class="text-white/80 text-sm mt-1 line-clamp-2">{{ photo.description }}</p>
+                                {% endif %}
+                                <div class="mt-3">
+                                    <span class="inline-flex items-center gap-1 text-white/70 text-xs">
+                                        <i class="fas fa-expand-alt"></i> Click to enlarge
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
 
-                <!-- Image Item 3 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 md:col-span-2 md:row-span-2">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Kids playing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
-                        <span class="badge badge-accent mb-2 w-max border-none">Events</span>
-                        <h3 class="text-white font-display font-bold text-3xl mb-2">Annual Sports Day</h3>
-                        <p class="text-white/80 text-md max-w-lg">Students exhibiting excellent teamwork and sportsmanship during our annual inter-house competitions.</p>
+                <!-- Empty filter state -->
+                <div id="no-results" class="hidden flex-col items-center justify-center py-20 text-center">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-images text-4xl text-primary/30"></i>
                     </div>
+                    <p class="text-gray-400 text-lg">No photos in this category yet.</p>
                 </div>
 
-                <!-- Image Item 4 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?w=600&h=450&fit=crop" alt="Graduation" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-primary mb-2 w-max border-none">Events</span>
-                        <h3 class="text-white font-bold text-xl">Graduation Ceremony</h3>
-                        <p class="text-white/80 text-sm">Celebrating milestones and achievements.</p>
+            {% else %}
+                <!-- Empty state -->
+                <div class="flex flex-col items-center justify-center py-32 text-center">
+                    <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-camera text-5xl text-primary/30"></i>
                     </div>
+                    <h3 class="text-2xl font-display font-bold text-gray-500 mb-2">No photos yet</h3>
+                    <p class="text-gray-400 max-w-md">Check back soon — the admin team will be adding photos of our students and campus life.</p>
                 </div>
+            {% endif %}
 
-                <!-- Image Item 5 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=450&fit=crop" alt="Science Lab" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-secondary mb-2 w-max border-none text-white">Academics</span>
-                        <h3 class="text-white font-bold text-xl">Practical Skills</h3>
-                        <p class="text-white/80 text-sm">Hands-on learning in the science laboratory.</p>
-                    </div>
-                </div>
-
-                <!-- Image Item 6 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <img src="https://images.unsplash.com/photo-1600195077077-7c815f540a3d?w=600&h=450&fit=crop" alt="Library" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-accent mb-2 w-max border-none">Campus</span>
-                        <h3 class="text-white font-bold text-xl">Reading Corner</h3>
-                        <p class="text-white/80 text-sm">Fostering a reading culture among learners.</p>
-                    </div>
-                </div>
-
-                <!-- Image Item 7 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 md:col-span-2">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb046ebf?w=800&h=400&fit=crop" alt="Playtime" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-primary mb-2 w-max border-none">Sports</span>
-                        <h3 class="text-white font-bold text-2xl">Holistic Growth</h3>
-                        <p class="text-white/80 text-sm">Playtime is essential for physical and social development.</p>
-                    </div>
-                </div>
-
-                <!-- Image Item 8 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=450&fit=crop" alt="Art Class" class="w-full h-full object-cover aspect-[4/3] group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                        <span class="badge badge-secondary mb-2 w-max border-none text-white">Academics</span>
-                        <h3 class="text-white font-bold text-xl">Creative Expresssion</h3>
-                        <p class="text-white/80 text-sm">Nurturing artistic talents in our students.</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- View More Button -->
-            <div class="text-center mt-12">
-                <button class="btn btn-outline btn-primary rounded-full px-8">
-                    <i class="fas fa-spinner mr-2 hidden"></i> Load More Images
-                </button>
-            </div>
-            
         </div>
     </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 bg-black/90 z-[9999] hidden items-center justify-center p-4"
+         onclick="closeLightbox(event)">
+        <button class="absolute top-4 right-5 text-white text-3xl opacity-70 hover:opacity-100 transition-opacity z-10"
+                onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </button>
+        <button class="absolute left-3 top-1/2 -translate-y-1/2 text-white text-3xl opacity-70 hover:opacity-100 z-10 px-2"
+                onclick="shiftLightbox(-1); event.stopPropagation();">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="absolute right-3 top-1/2 -translate-y-1/2 text-white text-3xl opacity-70 hover:opacity-100 z-10 px-2"
+                onclick="shiftLightbox(1); event.stopPropagation();">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="flex flex-col items-center max-w-4xl w-full" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="" class="max-h-[75vh] max-w-full rounded-xl object-contain shadow-2xl">
+            <div class="mt-4 text-center">
+                <p id="lightbox-title" class="text-white font-bold text-xl"></p>
+                <p id="lightbox-desc" class="text-white/70 text-sm mt-1"></p>
+            </div>
+        </div>
+    </div>
 
     <!-- Admission CTA Banner -->
     <section class="py-16 bg-gradient-to-r from-primary to-secondary text-white relative overflow-hidden">
@@ -144,3 +126,89 @@
     </section>
 
 {% endblock content %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+    /* ── Category filter ── */
+    var filterBtns  = document.querySelectorAll('.filter-btn');
+    var items       = document.querySelectorAll('.gallery-item');
+    var noResults   = document.getElementById('no-results');
+    var activeFilter = 'all';
+
+    filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            activeFilter = btn.dataset.filter;
+
+            // Toggle active button style
+            filterBtns.forEach(function (b) {
+                b.classList.remove('btn-primary');
+                b.classList.add('btn-outline', 'border-gray-300', 'text-gray-600');
+            });
+            btn.classList.add('btn-primary');
+            btn.classList.remove('btn-outline', 'border-gray-300', 'text-gray-600');
+
+            var visible = 0;
+            items.forEach(function (item) {
+                var show = activeFilter === 'all' || item.dataset.category === activeFilter;
+                item.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+
+            if (noResults) {
+                noResults.classList.toggle('hidden', visible > 0);
+                noResults.style.display = visible === 0 ? 'flex' : 'none';
+            }
+        });
+    });
+
+    /* ── Lightbox ── */
+    var lightbox     = document.getElementById('lightbox');
+    var lbImg        = document.getElementById('lightbox-img');
+    var lbTitle      = document.getElementById('lightbox-title');
+    var lbDesc       = document.getElementById('lightbox-desc');
+    var currentIndex = 0;
+
+    function visibleItems() {
+        return Array.from(items).filter(function (i) { return i.style.display !== 'none'; });
+    }
+
+    window.openLightbox = function (el) {
+        var visible = visibleItems();
+        currentIndex = visible.indexOf(el);
+        loadLightbox(visible[currentIndex]);
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = function (e) {
+        if (e && e.target !== lightbox) return;
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+    };
+
+    window.shiftLightbox = function (dir) {
+        var visible = visibleItems();
+        currentIndex = (currentIndex + dir + visible.length) % visible.length;
+        loadLightbox(visible[currentIndex]);
+    };
+
+    function loadLightbox(el) {
+        lbImg.src         = el.dataset.src;
+        lbImg.alt         = el.dataset.title;
+        lbTitle.textContent = el.dataset.title;
+        lbDesc.textContent  = el.dataset.desc || '';
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function (e) {
+        if (lightbox.classList.contains('hidden')) return;
+        if (e.key === 'Escape')     closeLightbox(lightbox);
+        if (e.key === 'ArrowRight') shiftLightbox(1);
+        if (e.key === 'ArrowLeft')  shiftLightbox(-1);
+    });
+})();
+</script>
+{% endblock extra_scripts %}
