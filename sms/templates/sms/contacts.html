@@ -3,7 +3,7 @@
 {% block header_title %}Contact Manager{% endblock %}
 
 {% block content %}
-<div class="p-4 md:p-6 lg:p-10 max-w-7xl mx-auto space-y-4 md:space-y-6 lg:space-y-8">
+<div class="p-4 md:p-6 lg:p-8 w-full max-w-none mx-auto space-y-4 md:space-y-5 lg:space-y-6">
 
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4 bg-white p-4 md:p-6 lg:p-8 rounded-2xl md:rounded-[2rem] shadow-xl border border-base-200 relative overflow-hidden">
@@ -12,8 +12,14 @@
             <h1 class="text-xl md:text-2xl lg:text-3xl font-display font-bold text-gray-800">Contact Manager</h1>
             <p class="text-gray-500 mt-1 md:mt-2 text-sm md:text-base lg:text-lg">Manage registry and imports.</p>
         </div>
-        <div class="relative z-10">
-            <a href="{% url 'sms:compose' %}" class="btn btn-primary btn-sm md:btn-md rounded-lg md:rounded-xl shadow-lg shadow-primary/30 gap-1 md:gap-2">
+        <div class="relative z-10 flex flex-wrap gap-2 md:gap-3">
+            <label for="add-contact-modal" class="btn btn-primary btn-sm md:btn-md rounded-lg md:rounded-xl shadow-lg shadow-primary/30 gap-1 md:gap-2 cursor-pointer">
+                <i class="fas fa-user-plus"></i> Add Contact
+            </label>
+            <label for="bulk-upload-modal" class="btn btn-outline btn-secondary btn-sm md:btn-md rounded-lg md:rounded-xl gap-1 md:gap-2 cursor-pointer">
+                <i class="fas fa-file-excel"></i> Bulk Import
+            </label>
+            <a href="{% url 'sms:compose' %}" class="btn btn-outline btn-primary btn-sm md:btn-md rounded-lg md:rounded-xl gap-1 md:gap-2">
                 <i class="fas fa-paper-plane"></i> <span class="hidden sm:inline">New </span>Broadcast
             </a>
         </div>
@@ -35,173 +41,175 @@
         {% endfor %}
     {% endif %}
 
-    <!-- Main Content Grid -->
-    <div class="grid lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8">
+    <!-- Directory Table (End-to-End) -->
+    <div class="bg-white rounded-2xl md:rounded-[2rem] shadow-xl border border-base-300 overflow-hidden w-full">
 
-        <!-- Left Column: Forms -->
-        <div class="lg:col-span-4 space-y-4 md:space-y-6 lg:space-y-8">
+        <!-- Card Header -->
+        <div class="p-3 md:p-4 lg:p-6 border-b border-base-200 bg-base-50 flex justify-between items-center">
+            <h2 class="text-lg md:text-xl font-bold text-primary flex items-center gap-2">
+                <i class="fas fa-users text-secondary"></i> Directory
+            </h2>
+        </div>
 
-            <!-- Add New Contact Card -->
-            <div class="bg-white rounded-2xl md:rounded-[2rem] shadow-xl p-4 md:p-6 lg:p-8 border border-base-300">
-                <h2 class="text-lg md:text-xl font-bold text-primary mb-4 md:mb-6 flex items-center gap-2">
-                    <i class="fas fa-user-plus text-accent"></i> Add Contact
-                </h2>
-                <form method="POST" action="{% url 'sms:contacts' %}" class="space-y-3 md:space-y-4">
-                    {% csrf_token %}
-                    <div class="form-control">
-                        <label class="label py-1"><span class="label-text font-bold text-gray-700 text-sm">Full Name</span></label>
-                        <input type="text" name="name" placeholder="Jane Doe" class="input input-bordered focus:border-primary w-full rounded-lg text-gray-900 bg-white border-gray-300 text-sm" required />
-                    </div>
-                    <div class="form-control">
-                        <label class="label py-1"><span class="label-text font-bold text-gray-700 text-sm">Phone</span></label>
-                        <input type="text" name="phone_number" placeholder="0712345678" class="input input-bordered focus:border-primary w-full rounded-lg text-gray-900 bg-white border-gray-300 text-sm" required />
-                    </div>
-                    <div class="form-control">
-                        <label class="label py-1"><span class="label-text font-bold text-gray-700 text-sm">Category</span></label>
-                        <select name="category" class="select select-bordered focus:border-primary w-full rounded-lg text-gray-900 bg-white border-gray-300 text-sm" required>
-                            <option disabled selected>Select</option>
-                            <option value="PARENT">Parent / Guardian</option>
-                            <option value="TEACHER">Teacher</option>
-                            <option value="STAFF">Staff</option>
+        <!-- Toolbar -->
+        <div class="p-3 md:p-4 bg-white border-b border-base-200">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-4">
+                <div class="flex items-center gap-2 w-full md:w-auto text-xs md:text-sm text-gray-500 flex-wrap">
+                    <div class="flex items-center gap-1 md:gap-2">
+                        <span class="hidden sm:inline">Show</span>
+                        <select class="select select-bordered select-xs md:select-sm rounded-lg bg-white text-gray-900 border-gray-300">
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm md:btn-md w-full rounded-lg md:rounded-xl shadow-lg gap-2">
-                        <i class="fas fa-save"></i> Save
+                    <button class="btn btn-outline btn-xs md:btn-sm rounded-lg border-gray-300 text-gray-600 font-normal">
+                        <i class="fas fa-file-import mr-1"></i> <span class="hidden md:inline">Import</span>
                     </button>
-                </form>
-            </div>
-
-            <!-- Bulk Upload Card -->
-            <div class="bg-gradient-to-br from-secondary to-primary rounded-2xl md:rounded-[2rem] shadow-xl p-4 md:p-6 lg:p-8 text-white relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-[6rem] md:text-[8rem]">
-                    <i class="fas fa-file-excel"></i>
-                </div>
-                <h2 class="text-lg md:text-xl font-bold mb-2 md:mb-3 relative z-10 flex items-center gap-2">
-                    <i class="fas fa-upload"></i> Bulk Upload
-                </h2>
-                <p class="text-white/80 text-xs md:text-sm mb-4 md:mb-6 relative z-10 leading-relaxed">
-                    Excel: <strong>Name, Phone, Category</strong>
-                </p>
-                <form method="POST" action="{% url 'sms:upload_contacts' %}" enctype="multipart/form-data" class="space-y-3 md:space-y-4 relative z-10">
-                    {% csrf_token %}
-                    <div class="form-control">
-                        <input type="file" name="excel_file" accept=".xlsx, .xls" class="file-input file-input-bordered file-input-sm bg-white/20 border-white/30 text-white w-full rounded-lg" required />
-                    </div>
-                    <button type="submit" class="btn bg-accent hover:bg-accent/90 text-white border-none w-full btn-sm md:btn-md rounded-lg md:rounded-xl shadow-lg gap-2 font-bold">
-                        <i class="fas fa-upload"></i> Upload
+                    <button class="btn btn-outline btn-xs md:btn-sm rounded-lg border-gray-300 text-gray-600 font-normal">
+                        <i class="fas fa-file-export mr-1"></i> <span class="hidden md:inline">Export</span>
                     </button>
-                </form>
-            </div>
-
-        </div>
-        <!-- End Left Column -->
-
-        <!-- Right Column: Directory Table -->
-        <div class="lg:col-span-8">
-            <div class="bg-white rounded-2xl md:rounded-[2rem] shadow-xl border border-base-300 overflow-hidden">
-
-                <!-- Card Header -->
-                <div class="p-3 md:p-4 lg:p-6 border-b border-base-200 bg-base-50 flex justify-between items-center">
-                    <h2 class="text-lg md:text-xl font-bold text-primary flex items-center gap-2">
-                        <i class="fas fa-users text-secondary"></i> Directory
-                    </h2>
                 </div>
-
-                <!-- Toolbar -->
-                <div class="p-3 md:p-4 bg-white border-b border-base-200">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-4">
-                        <div class="flex items-center gap-2 w-full md:w-auto text-xs md:text-sm text-gray-500 flex-wrap">
-                            <div class="flex items-center gap-1 md:gap-2">
-                                <span class="hidden sm:inline">Show</span>
-                                <select class="select select-bordered select-xs md:select-sm rounded-lg bg-white text-gray-900 border-gray-300">
-                                    <option>10</option>
-                                    <option>25</option>
-                                    <option>50</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-outline btn-xs md:btn-sm rounded-lg border-gray-300 text-gray-600 font-normal">
-                                <i class="fas fa-file-import mr-1"></i> <span class="hidden md:inline">Import</span>
-                            </button>
-                            <button class="btn btn-outline btn-xs md:btn-sm rounded-lg border-gray-300 text-gray-600 font-normal">
-                                <i class="fas fa-file-export mr-1"></i> <span class="hidden md:inline">Export</span>
-                            </button>
-                        </div>
-                        <div class="flex items-center gap-2 w-full md:w-auto">
-                            <div class="join shadow-sm flex-1 md:flex-none">
-                                <input id="directory-search" class="input input-bordered join-item input-xs md:input-sm w-full md:w-40 lg:w-56 bg-white text-gray-900 placeholder:text-gray-400" placeholder="Search..." />
-                                <button class="btn btn-sm join-item bg-white border-gray-300"><i class="fas fa-search text-gray-400"></i></button>
-                            </div>
-                        </div>
+                <div class="flex items-center gap-2 w-full md:w-auto">
+                    <div class="join shadow-sm flex-1 md:flex-none">
+                        <input id="directory-search" class="input input-bordered join-item input-xs md:input-sm w-full md:w-40 lg:w-56 bg-white text-gray-900 placeholder:text-gray-400" placeholder="Search..." />
+                        <button class="btn btn-sm join-item bg-white border-gray-300"><i class="fas fa-search text-gray-400"></i></button>
                     </div>
                 </div>
-
-                <!-- Table -->
-                <div class="overflow-x-auto">
-                    <table class="table table-zebra w-full text-xs md:text-sm">
-                        <thead>
-                            <tr class="bg-base-100/50 text-gray-500 uppercase tracking-wider border-y border-base-200">
-                                <th class="py-2 md:py-4 font-bold text-xs">Name</th>
-                                <th class="py-2 md:py-4 font-bold text-xs">Phone</th>
-                                <th class="py-2 md:py-4 font-bold text-xs">Category</th>
-                                <th class="py-2 md:py-4 font-bold text-center text-xs">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="directory-body">
-                            {% for contact in contacts %}
-                            <tr class="hover">
-                                <td class="font-medium text-gray-800 text-xs md:text-sm py-2 md:py-3">{{ contact.name }}</td>
-                                <td class="font-mono text-gray-600 text-xs py-2 md:py-3">{{ contact.phone_number }}</td>
-                                <td class="py-2 md:py-3">
-                                    {% if contact.category == 'PARENT' %}
-                                        <div class="badge badge-primary badge-xs md:badge-sm">Parent</div>
-                                    {% elif contact.category == 'STAFF' %}
-                                        <div class="badge badge-secondary badge-xs md:badge-sm">Staff</div>
-                                    {% elif contact.category == 'TEACHER' %}
-                                        <div class="badge badge-accent badge-xs md:badge-sm">Teacher</div>
-                                    {% else %}
-                                        <div class="badge badge-ghost badge-xs md:badge-sm">{{ contact.get_category_display }}</div>
-                                    {% endif %}
-                                </td>
-                                <td class="text-center py-2 md:py-3">
-                                    <form method="POST" action="{% url 'sms:delete_contact' contact.id %}" class="inline">
-                                        {% csrf_token %}
-                                        <button type="submit" onclick="return confirm('Delete {{ contact.name }}?')" class="btn btn-ghost btn-xs text-error hover:bg-error/10">
-                                            <i class="fas fa-trash-alt"></i> <span class="hidden md:inline">Delete</span>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="4" class="text-center py-8 md:py-12 text-gray-400">
-                                    <i class="fas fa-address-book text-2xl md:text-4xl mb-2 md:mb-3 block opacity-50"></i>
-                                    No contacts found.
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div class="p-3 md:p-6 border-t border-base-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs md:text-sm text-gray-500">
-                    <div class="text-center sm:text-left">Showing 1 to {{ contacts|length }} of {{ contacts|length }}</div>
-                    <div class="join">
-                        <button class="join-item btn btn-xs md:btn-sm bg-white border-gray-300">Prev</button>
-                        <button class="join-item btn btn-xs md:btn-sm bg-primary text-white border-primary">1</button>
-                        <button class="join-item btn btn-xs md:btn-sm bg-white border-gray-300">Next</button>
-                    </div>
-                </div>
-
             </div>
         </div>
-        <!-- End Right Column -->
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full text-xs md:text-sm">
+                <thead>
+                    <tr class="bg-base-100/50 text-gray-500 uppercase tracking-wider border-y border-base-200">
+                        <th class="py-2 md:py-4 font-bold text-xs">Name</th>
+                        <th class="py-2 md:py-4 font-bold text-xs">Phone</th>
+                        <th class="py-2 md:py-4 font-bold text-xs">Category</th>
+                        <th class="py-2 md:py-4 font-bold text-center text-xs">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="directory-body">
+                    {% for contact in contacts %}
+                    <tr class="hover">
+                        <td class="font-medium text-gray-800 text-xs md:text-sm py-2 md:py-3">{{ contact.name }}</td>
+                        <td class="font-mono text-gray-600 text-xs py-2 md:py-3">{{ contact.phone_number }}</td>
+                        <td class="py-2 md:py-3">
+                            {% if contact.category == 'PARENT' %}
+                                <div class="badge badge-primary badge-xs md:badge-sm">Parent</div>
+                            {% elif contact.category == 'STAFF' %}
+                                <div class="badge badge-secondary badge-xs md:badge-sm">Staff</div>
+                            {% elif contact.category == 'TEACHER' %}
+                                <div class="badge badge-accent badge-xs md:badge-sm">Teacher</div>
+                            {% else %}
+                                <div class="badge badge-ghost badge-xs md:badge-sm">{{ contact.get_category_display }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="text-center py-2 md:py-3">
+                            <div class="flex items-center justify-center gap-1 md:gap-2">
+                                <a href="{% url 'sms:compose' %}?contact_id={{ contact.id }}" class="btn btn-ghost btn-xs text-primary hover:bg-primary/10 gap-1">
+                                    <i class="fas fa-paper-plane"></i> <span class="hidden md:inline">Send SMS</span>
+                                </a>
+                                <form method="POST" action="{% url 'sms:delete_contact' contact.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" onclick="return confirm('Delete {{ contact.name }}?')" class="btn btn-ghost btn-xs text-error hover:bg-error/10">
+                                        <i class="fas fa-trash-alt"></i> <span class="hidden md:inline">Delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-8 md:py-12 text-gray-400">
+                            <i class="fas fa-address-book text-2xl md:text-4xl mb-2 md:mb-3 block opacity-50"></i>
+                            No contacts found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="p-3 md:p-6 border-t border-base-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs md:text-sm text-gray-500">
+            <div class="text-center sm:text-left">Showing 1 to {{ contacts|length }} of {{ contacts|length }}</div>
+            <div class="join">
+                <button class="join-item btn btn-xs md:btn-sm bg-white border-gray-300">Prev</button>
+                <button class="join-item btn btn-xs md:btn-sm bg-primary text-white border-primary">1</button>
+                <button class="join-item btn btn-xs md:btn-sm bg-white border-gray-300">Next</button>
+            </div>
+        </div>
 
     </div>
-    <!-- End Main Content Grid -->
 
 </div>
 <!-- End Page Wrapper -->
+
+<!-- Add Contact Modal -->
+<input type="checkbox" id="add-contact-modal" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle backdrop-blur-sm">
+  <div class="modal-box rounded-[2rem] max-w-md bg-white border border-primary/10">
+    <h3 class="font-bold text-2xl text-primary mb-6 flex items-center gap-2">
+        <i class="fas fa-user-plus text-accent"></i> Add New Contact
+    </h3>
+    <form method="POST" action="{% url 'sms:contacts' %}" class="space-y-4">
+        {% csrf_token %}
+        <div class="form-control">
+            <label class="label py-1"><span class="label-text font-bold text-gray-700 text-sm">Full Name</span></label>
+            <input type="text" name="name" placeholder="Jane Doe" class="input input-bordered focus:border-primary w-full rounded-xl text-gray-900 bg-white border-gray-300 text-sm" required />
+        </div>
+        <div class="form-control">
+            <label class="label py-1"><span class="label-text font-bold text-gray-700 text-sm">Phone</span></label>
+            <input type="text" name="phone_number" placeholder="0712345678" class="input input-bordered focus:border-primary w-full rounded-xl text-gray-900 bg-white border-gray-300 text-sm" required />
+        </div>
+        <div class="form-control">
+            <label class="label py-1"><span class="label-text font-bold text-gray-700 text-sm">Category</span></label>
+            <select name="category" class="select select-bordered focus:border-primary w-full rounded-xl text-gray-900 bg-white border-gray-300 text-sm" required>
+                <option disabled selected value="">Select Category</option>
+                <option value="PARENT">Parent / Guardian</option>
+                <option value="TEACHER">Teacher</option>
+                <option value="STAFF">Staff</option>
+            </select>
+        </div>
+        <div class="modal-action gap-2 pt-4">
+            <label for="add-contact-modal" class="btn btn-ghost rounded-xl">Cancel</label>
+            <button type="submit" class="btn btn-primary rounded-xl px-8 shadow-lg shadow-primary/30 gap-2">
+                <i class="fas fa-save"></i> Save Contact
+            </button>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Bulk Upload Modal -->
+<input type="checkbox" id="bulk-upload-modal" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle backdrop-blur-sm">
+  <div class="modal-box rounded-[2rem] max-w-md bg-gradient-to-br from-secondary to-primary text-white border border-white/10 relative overflow-hidden">
+    <div class="absolute -right-4 -bottom-4 opacity-10 text-[8rem]">
+        <i class="fas fa-file-excel"></i>
+    </div>
+    <h3 class="font-bold text-2xl mb-3 relative z-10 flex items-center gap-2">
+        <i class="fas fa-upload"></i> Bulk Import Contacts
+    </h3>
+    <p class="text-white/80 text-xs md:text-sm mb-6 relative z-10 leading-relaxed">
+        Upload an Excel spreadsheet with the columns: <strong>Name, Phone, Category</strong>. Valid categories are PARENT, TEACHER, and STAFF.
+    </p>
+    <form method="POST" action="{% url 'sms:upload_contacts' %}" enctype="multipart/form-data" class="space-y-4 relative z-10">
+        {% csrf_token %}
+        <div class="form-control">
+            <input type="file" name="excel_file" accept=".xlsx, .xls" class="file-input file-input-bordered file-input-sm bg-white/20 border-white/30 text-white w-full rounded-xl" required />
+        </div>
+        <div class="modal-action gap-2 pt-4">
+            <label for="bulk-upload-modal" class="btn btn-ghost text-white hover:bg-white/10 rounded-xl">Cancel</label>
+            <button type="submit" class="btn bg-accent hover:bg-accent/90 text-white border-none rounded-xl px-8 shadow-lg gap-2 font-bold">
+                <i class="fas fa-upload"></i> Start Upload
+            </button>
+        </div>
+    </form>
+  </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
