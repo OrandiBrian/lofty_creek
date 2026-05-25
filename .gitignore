@@ -6,3 +6,17 @@ __pycache__/
 *.pyc
 staticfiles/
 *.log
+
+# OS generated files
+.DS_Store
+**/.DS_Store
+
+# Local media uploads
+media/
+
+# IDE configurations
+.vscode/
+
+# Local testing and scratch files
+scratch/
+
