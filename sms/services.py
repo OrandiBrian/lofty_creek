@@ -132,9 +132,17 @@ class SMS:
             return "Unconfigured"
         try:
             account = africastalking.Application
-            response = account().fetch_credits()
+            response = account.fetch_application_data()
             if isinstance(response, dict) and 'UserData' in response and 'balance' in response['UserData']:
-                return response['UserData']['balance']
+                balance_str = response['UserData']['balance']
+                try:
+                    parts = balance_str.split(' ')
+                    if len(parts) == 2:
+                        currency, amount = parts
+                        return f"{currency} {float(amount):.2f}"
+                except Exception:
+                    pass
+                return balance_str
             return str(response)
         except Exception as e:
             logger.error(f"Error fetching balance from Africa's Talking: {e}")
