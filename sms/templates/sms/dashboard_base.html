@@ -71,7 +71,13 @@
                 <div class="flex-1">
                     <h1 class="text-xl font-bold text-gray-800 font-display hidden sm:block"> {% block header_title %}Overview{% endblock %} </h1>
                 </div>
-                <div class="flex-none gap-4">
+                <div class="flex-none gap-3 md:gap-4 flex items-center">
+                    {% if navbar_balance %}
+                    <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-2.5 py-1 text-xs font-bold flex items-center gap-1.5 shadow-sm" title="Africa's Talking Balance">
+                        <i class="fas fa-coins text-amber-500"></i>
+                        <span class="font-mono text-[10px] md:text-xs">{{ navbar_balance }}</span>
+                    </div>
+                    {% endif %}
                     <div class="flex items-center gap-2">
                         <div class="avatar placeholder">
                             <div class="bg-primary text-white rounded-full w-10">
