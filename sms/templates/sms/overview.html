@@ -23,7 +23,7 @@
     </div>
 
     <!-- Key Metrics Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 md:gap-4 lg:gap-6">
+    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2 md:gap-4 lg:gap-6">
         <!-- Stat Card 1 -->
         <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
             <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-blue-100 text-blue-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
@@ -68,8 +68,19 @@
             </div>
         </div>
 
-        <!-- Stat Card 5 -->
-        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300 col-span-2 lg:col-span-1">
+        <!-- Stat Card 5 (Balance) -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
+            <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-amber-100 text-amber-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="text-center md:text-left min-w-0">
+                <p class="text-[8px] md:text-[10px] lg:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0 lg:mb-1 truncate">Balance</p>
+                <h3 class="text-sm md:text-lg lg:text-2xl font-display font-bold text-gray-800 truncate" title="{{ balance }}">{{ balance }}</h3>
+            </div>
+        </div>
+
+        <!-- Stat Card 6 (Spend) -->
+        <div class="bg-white p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-[2rem] shadow-lg border border-base-200 flex items-center gap-2 md:gap-3 lg:gap-5 transition-transform hover:-translate-y-1 duration-300">
             <div class="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 bg-orange-100 text-orange-600 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center text-base md:text-xl lg:text-2xl shrink-0">
                 <i class="fas fa-wallet"></i>
             </div>

@@ -21,6 +21,10 @@
             </label>
             <div class="stats stats-horizontal bg-base-100 rounded-xl md:rounded-2xl border border-base-200 shadow-sm">
                 <div class="stat py-1 md:py-2 px-3 md:px-4 h-auto min-w-[80px] md:min-w-[100px] flex flex-col justify-center">
+                    <div class="stat-title text-[8px] md:text-[10px] uppercase font-bold tracking-wider">Balance</div>
+                    <div class="stat-value text-accent text-base md:text-xl font-bold truncate max-w-[120px]" title="{{ balance }}">{{ balance }}</div>
+                </div>
+                <div class="stat py-1 md:py-2 px-3 md:px-4 h-auto min-w-[80px] md:min-w-[100px] flex flex-col justify-center">
                     <div class="stat-title text-[8px] md:text-[10px] uppercase font-bold tracking-wider">Sent</div>
                     <div class="stat-value text-primary text-base md:text-xl">{{ total_sent }}</div>
                 </div>

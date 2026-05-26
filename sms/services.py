@@ -124,6 +124,21 @@ class SMS:
             logger.error(f"Encountered exception while sending Campaign '{campaign.name}' (ID: {campaign.id}): {str(e)}", exc_info=True)
             return {"error": "Encountered an error while sending: %s" % str(e)}
 
+    def get_balance(self):
+        """
+        Fetches the remaining credits/balance from Africa's Talking.
+        """
+        if not self.api_key:
+            return "Unconfigured"
+        try:
+            account = africastalking.Application
+            response = account().fetch_credits()
+            if isinstance(response, dict) and 'UserData' in response and 'balance' in response['UserData']:
+                return response['UserData']['balance']
+            return str(response)
+        except Exception as e:
+            logger.error(f"Error fetching balance from Africa's Talking: {e}")
+            return "Unavailable"
 
 
 def send_bulk_sms(campaign):
@@ -132,3 +147,10 @@ def send_bulk_sms(campaign):
     Called from views.py.
     """
     return SMS().send(campaign)
+
+
+def get_sms_balance():
+    """
+    Convenience wrapper to retrieve remaining SMS credits/balance.
+    """
+    return SMS().get_balance()

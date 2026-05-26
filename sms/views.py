@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth import authenticate, login, logout
 from .models import SMSCampaign, SMSMessage, SMSTemplate
 from core.models import Contact, ContactGroup
-from .services import send_bulk_sms, SMS
+from .services import send_bulk_sms, SMS, get_sms_balance
 import openpyxl
 
 from django.db.models import Sum
@@ -56,6 +56,7 @@ def dashboard_overview(request):
     total_templates = SMSTemplate.objects.count()
     
     recent_campaigns = SMSCampaign.objects.order_by('-created_at')[:5]
+    balance = get_sms_balance()
     
     context = {
         'total_contacts': total_contacts,
@@ -66,6 +67,7 @@ def dashboard_overview(request):
         'total_spend': total_spend,
         'total_templates': total_templates,
         'recent_campaigns': recent_campaigns,
+        'balance': balance,
     }
     return render(request, 'sms/overview.html', context)
 
@@ -136,6 +138,7 @@ def compose_sms(request):
     total_sent = SMSMessage.objects.filter(status='SENT').count()
     total_failed = SMSMessage.objects.filter(status='FAILED').count()
     campaign_count = SMSCampaign.objects.count()
+    balance = get_sms_balance()
     
     context = {
         'contacts': contacts,
@@ -144,7 +147,8 @@ def compose_sms(request):
         'templates': templates,
         'total_sent': total_sent,
         'total_failed': total_failed,
-        'campaign_count': campaign_count
+        'campaign_count': campaign_count,
+        'balance': balance
     }
         
     return render(request, 'sms/compose.html', context)
