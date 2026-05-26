@@ -236,12 +236,30 @@
             }
         }
 
-        // Intercept sidebar nav link clicks
+        // Intercept all internal dashboard links for smooth SPA navigation (no full page reload)
         document.addEventListener('click', function(e) {
-            const link = e.target.closest('a[data-nav="true"]');
+            const link = e.target.closest('a');
             if (!link) return;
-            e.preventDefault();
-            navigateTo(link.href);
+            
+            // Check if link target is on the same host
+            try {
+                const linkUrl = new URL(link.href);
+                if (linkUrl.origin === window.location.origin) {
+                    const path = linkUrl.pathname;
+                    
+                    // Intercept any internal dashboard routes (/sms/*), except login, logout, and callback webhook
+                    if (path.startsWith('/sms/') && 
+                        !path.startsWith('/sms/logout/') && 
+                        !path.startsWith('/sms/login/') && 
+                        !path.startsWith('/sms/delivery-report/')) {
+                        
+                        e.preventDefault();
+                        navigateTo(link.href);
+                    }
+                }
+            } catch (err) {
+                // Ignore invalid URLs
+            }
         });
 
         // Intercept Delete forms for smooth row removal
