@@ -7,6 +7,7 @@ class SMSCampaign(models.Model):
         ('QUEUED', 'Queued'),
         ('SENDING', 'Sending'),
         ('SENT', 'Sent'),
+        ('PARTIAL', 'Partially sent'),
         ('FAILED', 'Failed'),
     ]
 
@@ -44,7 +45,7 @@ class SMSMessage(models.Model):
         return f"To {self.contact.phone_number} - {self.status}"
 
 class SMSTemplate(models.Model):
-    name = models.CharField(max_length=150, help_text="Template Name")
+    name = models.CharField(max_length=150, unique=True, help_text="Template Name")
     body = models.TextField(help_text="Message body template")
     created_at = models.DateTimeField(auto_now_add=True)
 

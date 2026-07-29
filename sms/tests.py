@@ -1,9 +1,10 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User
 from core.models import Contact
 from sms.models import SMSCampaign, SMSMessage
 
+@override_settings(AFRICASTALKING_API_KEY='')
 class SMSAppTest(TestCase):
     def setUp(self):
         # Create a staff user for view tests
@@ -78,3 +79,22 @@ class SMSAppTest(TestCase):
         response = self.client.get(reverse('sms:contacts'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'sms/contacts.html')
+
+    @override_settings(AFRICASTALKING_WEBHOOK_TOKEN='secret-token')
+    def test_delivery_report_rejects_missing_token(self):
+        response = self.client.post(reverse('sms:delivery_report'), {
+            'id': 'message-id', 'status': 'Delivered',
+        })
+        self.assertEqual(response.status_code, 401)
+
+    @override_settings(AFRICASTALKING_WEBHOOK_TOKEN='secret-token')
+    def test_delivery_report_updates_message_with_valid_token(self):
+        self.message.at_message_id = 'message-id'
+        self.message.save()
+        response = self.client.post(
+            f"{reverse('sms:delivery_report')}?token=secret-token",
+            {'id': 'message-id', 'status': 'Delivered'},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.message.refresh_from_db()
+        self.assertEqual(self.message.status, 'DELIVERED')

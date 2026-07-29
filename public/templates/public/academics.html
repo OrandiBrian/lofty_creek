@@ -21,7 +21,7 @@
                     <li class="text-accent">Academics</li>
                 </ul>
             </div>
-            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">Academic Excellence</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4">Academic Excellence</h1>
             <p class="text-xl text-white/80 max-w-2xl mx-auto">Providing a holistic, competency-based education rooted in foundational Christian principles.</p>
         </div>
     </section>
@@ -59,8 +59,8 @@
                 </div>
                 <div class="lg:w-1/2">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=400&fit=crop" class="rounded-3xl shadow-2xl relative z-10 w-full" alt="Students in class">
-                        <div class="absolute -top-6 -right-6 w-full h-full bg-accent/20 rounded-3xl z-0"></div>
+                        <img src="{% if page_images.academics_approach %}{{ page_images.academics_approach.image.url }}{% else %}https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=400&fit=crop{% endif %}" class="rounded-3xl shadow-2xl relative z-10 w-full" alt="{{ page_images.academics_approach.alt_text|default:'Students in class' }}">
+                        <div class="absolute -top-4 sm:-top-6 right-0 w-full h-full bg-accent/20 rounded-3xl z-0"></div>
                     </div>
                 </div>
             </div>
@@ -68,11 +68,12 @@
     </section>
 
     <!-- Curriculum Levels -->
-    <section class="py-20 bg-base-200">
+    <section id="learning-levels" class="py-20 bg-base-200 scroll-mt-28">
         <div class="container mx-auto px-4">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="text-accent font-bold text-sm uppercase tracking-wider">Learning Levels</span>
                 <h2 class="text-4xl font-display font-bold text-primary mt-2">Comprehensive Educational Journey</h2>
+                <p class="text-gray-600 mt-4 font-semibold">Playgroup → PP1 → PP2 → Grades 1–6</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -83,9 +84,9 @@
                             <i class="fas fa-shapes text-3xl text-primary"></i>
                         </div>
                         <h3 class="text-3xl font-display font-bold text-primary mb-2">Early Years (ECDE)</h3>
-                        <p class="text-accent font-semibold mb-4">Playgroup, PP1, and PP2</p>
+                        <p class="text-accent font-semibold mb-4">Playgroup → PP1 → PP2</p>
                         <p class="text-gray-600 mb-6">
-                            Our kindergarten program heavily utilizes the Montessori method, emphasizing self-directed activity, hands-on learning, and collaborative play. Children are guided to make creative choices while discovering the world.
+                            Our early-years programme begins in Playgroup and progresses through PP1 and PP2. It heavily utilizes the Montessori method, emphasizing self-directed activity, hands-on learning, and collaborative play.
                         </p>
                         <ul class="space-y-2 text-sm text-gray-600 font-medium">
                             <li class="flex items-center gap-2"><i class="fas fa-check text-success"></i> Sensory learning & Motor skills</li>
@@ -102,7 +103,7 @@
                             <i class="fas fa-book-reader text-3xl text-secondary"></i>
                         </div>
                         <h3 class="text-3xl font-display font-bold text-primary mb-2">Primary School</h3>
-                        <p class="text-accent font-semibold mb-4">Grade 1 through Grade 6</p>
+                        <p class="text-accent font-semibold mb-4">Grades 1 through 6</p>
                         <p class="text-gray-600 mb-6">
                             Implementing the full Competency-Based Curriculum (CBC), our primary school prepares students to be engaged, empowered, and ethical citizens. We focus on continuous assessment over summative grading.
                         </p>
@@ -169,7 +170,7 @@
                     </ul>
                 </div>
                 <div class="lg:w-1/2">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" class="rounded-3xl shadow-xl w-full" alt="Students reviewing work">
+                    <img src="{% if page_images.academics_support %}{{ page_images.academics_support.image.url }}{% else %}https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop{% endif %}" class="rounded-3xl shadow-xl w-full" alt="{{ page_images.academics_support.alt_text|default:'Students reviewing work' }}">
                 </div>
             </div>
         </div>

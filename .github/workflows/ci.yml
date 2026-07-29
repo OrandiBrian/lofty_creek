@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python manage.py makemigrations core public sms --check --dry-run
+        env:
+          DEBUG: "True"
+          SECRET_KEY: ci-only-secret
+      - run: python manage.py test
+        env:
+          DEBUG: "True"
+          SECRET_KEY: ci-only-secret
+          AFRICASTALKING_API_KEY: ""
+      - run: python manage.py check --deploy
+        env:
+          DEBUG: "False"
+          SECRET_KEY: ci-secret-key-that-is-long-and-random-enough-for-checks-123
+          ALLOWED_HOSTS: example.com
+          CSRF_TRUSTED_ORIGINS: https://example.com

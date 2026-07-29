@@ -12,7 +12,7 @@
                     <li class="text-accent">Admissions</li>
                 </ul>
             </div>
-            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">Join Lofty Creek</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4">Join Lofty Creek</h1>
             <p class="text-xl text-white/80 max-w-2xl mx-auto">We welcome families who share our vision for holistic, Christian-based education.</p>
         </div>
     </section>
@@ -156,10 +156,10 @@
                         <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
                             <input type="radio" name="my-accordion-3" checked="checked" /> 
                             <div class="collapse-title text-xl font-medium text-primary">
-                                Kindergarten (ECDE)
+                                Early Years: Playgroup → PP1 → PP2
                             </div>
                             <div class="collapse-content text-gray-600"> 
-                                <p>We offer a blend of Montessori and Competency-Based Curriculum approaches for our youngest learners. A strong foundation combining play, creativity, and foundational literacy/numeracy.</p>
+                                <p>Children begin in Playgroup, then progress to PP1 and PP2 through a blend of Montessori and Competency-Based Curriculum approaches. This builds a strong foundation in play, creativity, literacy, and numeracy.</p>
                             </div>
                         </div>
                         <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
@@ -227,9 +227,11 @@
                     </div>
                 </div>
                 
-                <div class="bg-white text-base-content rounded-3xl p-8 shadow-2xl relative">
+                <div class="bg-white text-base-content rounded-3xl p-5 sm:p-8 shadow-2xl relative">
                     <div class="absolute -top-6 -right-6 w-24 h-24 bg-secondary/20 rounded-full blur-2xl"></div>
-                    <form class="space-y-5 relative z-10">
+                    <form method="POST" action="{% url 'public:admissions' %}" class="space-y-5 relative z-10">
+                        {% csrf_token %}
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
                         <div>
                             <h3 class="text-2xl font-bold text-primary mb-1">Request Information</h3>
                             <p class="text-sm text-gray-500 mb-6">Fill out this quick form and our admissions team will get back to you shortly.</p>
@@ -241,7 +243,7 @@
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <i class="fas fa-user text-gray-400"></i>
                                 </div>
-                                <input type="text" placeholder="Your Full Name" class="input input-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full pl-11 bg-base-100" />
+                                <input type="text" name="parent_name" placeholder="Your Full Name" class="input input-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full pl-11 bg-base-100" required />
                             </div>
                         </div>
                         
@@ -251,7 +253,7 @@
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <i class="fas fa-phone text-gray-400"></i>
                                 </div>
-                                <input type="tel" placeholder="Phone Number" class="input input-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full pl-11 bg-base-100" />
+                                <input type="tel" name="phone_number" placeholder="Phone Number" class="input input-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full pl-11 bg-base-100" required />
                             </div>
                         </div>
                         
@@ -261,11 +263,11 @@
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                     <i class="fas fa-graduation-cap text-gray-400"></i>
                                 </div>
-                                <select class="select select-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full pl-11 bg-base-100">
-                                    <option disabled selected>Select Grade Level of Interest</option>
-                                    <option>Kindergarten (ECDE)</option>
-                                    <option>Lower Primary (G1-3)</option>
-                                    <option>Upper Primary (G4-6)</option>
+                                <select name="grade_level" class="select select-bordered focus:border-primary focus:ring-1 focus:ring-primary w-full pl-11 bg-base-100" required>
+                                    <option value="" disabled selected>Select Grade Level of Interest</option>
+                                    <option value="ecde">Playgroup / PP1 / PP2 (ECDE)</option>
+                                    <option value="lower-primary">Lower Primary (G1-3)</option>
+                                    <option value="upper-primary">Upper Primary (G4-6)</option>
                                 </select>
                             </div>
                         </div>

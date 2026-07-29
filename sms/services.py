@@ -2,6 +2,8 @@ from __future__ import print_function
 
 import logging
 import africastalking
+from decimal import Decimal, InvalidOperation
+from django.db import transaction
 from django.conf import settings
 from .models import SMSMessage
 
@@ -39,25 +41,28 @@ class SMS:
         campaign.save()
 
         # Collect unique recipients (set handles deduplication)
-        recipients_set = set()
+        recipients_by_phone = {
+            contact.phone_number: contact
+            for contact in campaign.recipients.all()
+            if contact.phone_number
+        }
+        group_contacts = (
+            campaign.recipient_groups.all()
+            .values_list('contacts__id', flat=True)
+        )
+        from core.models import Contact
+        for contact in Contact.objects.filter(id__in=group_contacts):
+            if contact.phone_number:
+                recipients_by_phone[contact.phone_number] = contact
 
-        # Add individual recipients
-        for contact in campaign.recipients.all():
-            recipients_set.add(contact)
-
-        # Add group recipients
-        for group in campaign.recipient_groups.all():
-            for contact in group.contacts.all():
-                recipients_set.add(contact)
-
-        if not recipients_set:
+        if not recipients_by_phone:
             campaign.status = 'FAILED'
             campaign.save()
             logger.warning(f"Aborting Campaign '{campaign.name}' (ID: {campaign.id}): No valid recipients found.")
             return {"error": "No valid recipients found."}
 
         # Set the numbers to send to in international format
-        recipients = [contact.phone_number for contact in recipients_set if contact.phone_number]
+        recipients = list(recipients_by_phone)
 
         if not recipients:
             campaign.status = 'FAILED'
@@ -78,7 +83,7 @@ class SMS:
                 response = self.sms.send(message, recipients)
 
             success_count = 0
-            total_cost = 0.0
+            total_cost = Decimal('0')
 
             # Parse per-recipient delivery data from AT response
             if 'SMSMessageData' in response and 'Recipients' in response['SMSMessageData']:
@@ -87,24 +92,27 @@ class SMS:
                     status = recipient_data.get('status')
                     message_id = recipient_data.get('messageId')
                     cost_str = recipient_data.get('cost', '0')
-                    cost_val = float(cost_str.split(' ')[-1]) if ' ' in cost_str else 0.0
+                    try:
+                        cost_val = Decimal(cost_str.split(' ')[-1])
+                    except (InvalidOperation, AttributeError):
+                        cost_val = Decimal('0')
 
                     # Match the phone number back to our Contact object
-                    contact = next(
-                        (c for c in recipients_set
-                         if c.phone_number == number or c.phone_number == number.replace('+', '')),
-                        None
-                    )
+                    normalized_number = number if number.startswith('+') else f'+{number}'
+                    contact = recipients_by_phone.get(normalized_number)
 
                     if contact:
-                        SMSMessage.objects.create(
-                            campaign=campaign,
-                            contact=contact,
-                            message_body=campaign.message_body,
-                            at_message_id=message_id,
-                            status='SENT' if status == 'Success' else 'FAILED',
-                            cost=cost_val
-                        )
+                        with transaction.atomic():
+                            SMSMessage.objects.update_or_create(
+                                campaign=campaign,
+                                contact=contact,
+                                defaults={
+                                    'message_body': campaign.message_body,
+                                    'at_message_id': message_id,
+                                    'status': 'SENT' if status == 'Success' else 'FAILED',
+                                    'cost': cost_val,
+                                },
+                            )
 
                         if status == 'Success':
                             success_count += 1
@@ -112,7 +120,12 @@ class SMS:
 
             # Update campaign status and cost
             campaign.total_cost = total_cost
-            campaign.status = 'SENT' if success_count > 0 else 'FAILED'
+            if success_count == len(recipients):
+                campaign.status = 'SENT'
+            elif success_count:
+                campaign.status = 'PARTIAL'
+            else:
+                campaign.status = 'FAILED'
             campaign.save()
 
             logger.info(f"Successfully processed Campaign '{campaign.name}' (ID: {campaign.id}). Dispatch status: {campaign.status}. Success count: {success_count}/{len(recipients)}, Total Cost: {total_cost}")

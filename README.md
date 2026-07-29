@@ -7,7 +7,7 @@ A comprehensive Django-based school management system for **Lofty Creek Christia
 ### Public Website
 - **Homepage** - Hero section, quick links, school overview
 - **About Us** - School history, mission, vision, values
-- **Academics** - Curriculum details, grade levels (Playgroup to Grade 6)
+- **Academics** - Curriculum details and progression from Playgroup to PP1, PP2, and Grades 1-6
 - **Admissions** - Online application process
 - **Events** - School calendar and upcoming events
 - **Gallery** - Photo gallery of school activities
@@ -147,8 +147,15 @@ Dear {name}, this is a reminder that the school fees balance of KES {balance} is
 
 1. Set `DEBUG=False` in environment
 2. Configure PostgreSQL database
-3. Set up Celery with Redis for async SMS sending
-4. Use Gunicorn as WSGI server:
+3. Set up a Celery worker and Celery Beat with Redis:
+```bash
+celery -A config worker --loglevel=info
+celery -A config beat --loglevel=info
+```
+4. Configure durable S3-compatible media storage using the `AWS_*` variables
+5. Configure the Africa's Talking delivery callback as
+   `/sms/delivery-report/?token=<AFRICASTALKING_WEBHOOK_TOKEN>`
+6. Use Gunicorn as WSGI server:
 ```bash
 gunicorn config.wsgi:application --bind 0.0.0.0:8000
 ```
@@ -162,16 +169,19 @@ gunicorn config.wsgi:application --bind 0.0.0.0:8000
 | `DATABASE_URL` | PostgreSQL connection string | No |
 | `AFRICASTALKING_API_KEY` | Africa's Talking API key | Yes (for SMS) |
 | `AFRICASTALKING_USERNAME` | Africa's Talking username | Yes (for SMS) |
-| `REDIS_URL` | Redis connection for Celery | No |
+| `REDIS_URL` | Redis connection for Celery | Yes (production) |
+| `AFRICASTALKING_WEBHOOK_TOKEN` | Secret delivery-callback token | Yes (SMS) |
+| `SMS_SEND_ASYNC` | Queue SMS work instead of blocking requests | Yes (production) |
+| `AWS_STORAGE_BUCKET_NAME` | Durable media bucket | Yes (production uploads) |
 
 ## School Information
 
 - **Name**: Lofty Creek Christian School
 - **Location**: Along Wambaa road, 0.5km off Nairobi-Nakuru Highway at Muthiga's Munyua road
 - **Address**: P.O BOX 1882-00502, Nairobi
-- **Phone**: +2547-2911-8877
+- **Phone**: 0729118877
 - **Email**: info@loftycreekchristianschool.org
-- **Programs**: Playgroup (2-3 years), PP1 & PP2 (4-5 years), Grades 1-6
+- **Programs**: Playgroup (2-3 years), then PP1 and PP2 (4-5 years), followed by Grades 1-6
 
 ## License
 

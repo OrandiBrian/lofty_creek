@@ -1,5 +1,6 @@
 from django.test import TestCase
-from .models import Contact, ContactGroup, SMSTemplate
+from django.core.exceptions import ValidationError
+from .models import Contact, ContactGroup
 
 class CoreModelsTest(TestCase):
     def setUp(self):
@@ -17,11 +18,6 @@ class CoreModelsTest(TestCase):
         )
         self.group.contacts.add(self.contact)
 
-        self.template = SMSTemplate.objects.create(
-            name='Welcome Template',
-            content='Welcome to LCCS {name}'
-        )
-
     def test_contact_creation(self):
         self.assertEqual(Contact.objects.count(), 1)
         self.assertEqual(self.contact.name, 'Test Parent')
@@ -32,7 +28,10 @@ class CoreModelsTest(TestCase):
         self.assertIn(self.contact, self.group.contacts.all())
         self.assertEqual(str(self.group), 'Test Group')
 
-    def test_sms_template_creation(self):
-        self.assertEqual(SMSTemplate.objects.count(), 1)
-        self.assertEqual(self.template.name, 'Welcome Template')
-        self.assertEqual(str(self.template), 'Welcome Template')
+    def test_phone_number_is_normalized(self):
+        contact = Contact.objects.create(phone_number='0712 345 678', name='Local')
+        self.assertEqual(contact.phone_number, '+254712345678')
+
+    def test_invalid_phone_number_is_rejected(self):
+        with self.assertRaises(ValidationError):
+            Contact.objects.create(phone_number='123', name='Invalid')

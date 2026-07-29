@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import logging
+import hmac
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -9,7 +10,11 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth import authenticate, login, logout
 from .models import SMSCampaign, SMSMessage, SMSTemplate
 from core.models import Contact, ContactGroup
-from .services import send_bulk_sms, SMS, get_sms_balance
+from core.validators import normalize_phone_number
+from .services import SMS, get_sms_balance
+from .tasks import dispatch_campaign
+from django.conf import settings
+from django.core.exceptions import ValidationError
 import openpyxl
 
 from django.db.models import Sum
@@ -39,6 +44,7 @@ def sms_login(request):
     return render(request, 'sms/login.html')
 
 
+@require_POST
 def sms_logout(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
@@ -114,7 +120,7 @@ def compose_sms(request):
             campaign.recipient_groups.add(*target_groups)
 
         # Trigger send
-        result = send_bulk_sms(campaign)
+        result = dispatch_campaign(campaign)
         
         if "success" in result:
             msg_text = f"Campaign '{campaign_name}' processed! {result['success']}"
@@ -166,8 +172,7 @@ def manage_contacts(request):
             
         try:
             # Basic formatting
-            if phone_number.startswith('0'):
-                phone_number = '+254' + phone_number[1:]
+            phone_number = normalize_phone_number(phone_number)
                 
             Contact.objects.create(
                 name=name,
@@ -175,8 +180,11 @@ def manage_contacts(request):
                 category=category
             )
             messages.success(request, f"Contact {name} added successfully.")
-        except Exception as e:
-            messages.error(request, f"Error adding contact. Phone numbers must be unique. ({str(e)})")
+        except ValidationError as exc:
+            messages.error(request, ' '.join(exc.messages))
+        except Exception:
+            logger.exception("Unable to add contact")
+            messages.error(request, "Unable to add contact. The phone number may already exist.")
             
         return redirect('sms:contacts')
         
@@ -184,6 +192,7 @@ def manage_contacts(request):
     return render(request, 'sms/contacts.html', {'contacts': contacts})
 
 @staff_member_required
+@require_POST
 def delete_contact(request, contact_id):
     if request.method == 'POST':
         try:
@@ -228,8 +237,11 @@ def upload_contacts(request):
                     skipped_count += 1
                     continue
                     
-                if phone.startswith('0'):
-                    phone = '+254' + phone[1:]
+                try:
+                    phone = normalize_phone_number(phone)
+                except ValidationError:
+                    skipped_count += 1
+                    continue
                     
                 # Standardize category
                 valid_categories = ['PARENT', 'TEACHER', 'STAFF']
@@ -248,8 +260,9 @@ def upload_contacts(request):
             else:
                 messages.warning(request, f"No new contacts added. All found rows were likely duplicates or invalid. (Skipped {skipped_count})")
                 
-        except Exception as e:
-            messages.error(request, f"Error parsing excel file: {str(e)}")
+        except Exception:
+            logger.exception("Unable to import contacts")
+            messages.error(request, "The spreadsheet could not be processed.")
             
     return redirect('sms:contacts')
 
@@ -268,7 +281,7 @@ def resend_campaign(request, campaign_id):
             new_campaign.recipient_groups.set(original.recipient_groups.all())
             
             # Send
-            result = send_bulk_sms(new_campaign)
+            result = dispatch_campaign(new_campaign)
             
             if "success" in result:
                 messages.success(request, f"Campaign resent successfully! {result['success']}")
@@ -281,6 +294,7 @@ def resend_campaign(request, campaign_id):
     return redirect(request.META.get('HTTP_REFERER', 'sms:overview'))
 
 @staff_member_required
+@require_POST
 def delete_campaign(request, campaign_id):
     if request.method == 'POST':
         try:
@@ -373,6 +387,7 @@ def manage_templates(request):
     return render(request, 'sms/templates.html', {'templates': templates_list})
 
 @staff_member_required
+@require_POST
 def delete_template(request, template_id):
     if request.method == 'POST':
         try:
@@ -386,18 +401,25 @@ def delete_template(request, template_id):
     return redirect('sms:templates')
 
 @csrf_exempt
+@require_POST
 def delivery_report(request):
     """
     Webhook endpoint to receive delivery reports from Africa's Talking.
     AT expects a 200 OK response.
     """
+    expected_token = settings.AFRICASTALKING_WEBHOOK_TOKEN
+    supplied_token = request.headers.get('X-Webhook-Token') or request.GET.get('token', '')
+    if not expected_token or not hmac.compare_digest(supplied_token, expected_token):
+        logger.warning("Rejected unauthenticated SMS delivery report")
+        return HttpResponse('Unauthorized', status=401)
+
     if request.method == 'POST':
         # Africa's Talking sends these parameters
         message_id = request.POST.get('id')
         status = request.POST.get('status')
         failure_reason = request.POST.get('failureReason', '')
         
-        logger.info(f"Incoming Delivery Report Webhook: AT_ID='{message_id}', Status='{status}', FailureReason='{failure_reason}'")
+        logger.info("Incoming delivery report status=%s", status)
         
         if message_id and status:
             try:
@@ -415,12 +437,11 @@ def delivery_report(request):
                     msg.status = 'FAILED'
                 
                 msg.save()
-                logger.info(f"Successfully updated SMS message status from '{old_status}' to '{msg.status}' for Contact '{msg.contact.name}' ({msg.contact.phone_number}), Campaign '{msg.campaign.name}' (ID: {msg.campaign.id}), Message ID: {msg.id}")
+                logger.info("Updated SMS delivery status from %s to %s", old_status, msg.status)
             except SMSMessage.DoesNotExist:
-                logger.warning(f"No matching SMSMessage record found for AT Message ID '{message_id}'. Possible test payload or unsaved record.")
-            except Exception as e:
-                logger.error(f"Failed to process delivery report callback for AT Message ID '{message_id}': {str(e)}", exc_info=True)
+                logger.warning("No matching SMS message found for delivery report")
+            except Exception:
+                logger.exception("Failed to process SMS delivery report")
                 
     # Always respond with 200 OK so AT knows we received it
     return HttpResponse('OK', status=200)
-

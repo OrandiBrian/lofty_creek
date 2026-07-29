@@ -18,7 +18,7 @@
                         Nurturing <span class="text-accent">Young Minds</span> With Christian Values
                     </h1>
                     <p class="text-base md:text-xl text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                        Where education meets faith. We provide a holistic learning environment for Playgroup through Grade 6, integrating Competency-Based and Montessori curricula.
+                        Where education meets faith. We nurture learners through Playgroup, PP1, PP2, and Grades 1–6, integrating Competency-Based and Montessori curricula.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 md:pt-4 justify-center lg:justify-start">
                         <a href="{% url 'public:about' %}" class="btn btn-accent btn-lg shadow-xl hover:scale-105 transition-transform">
@@ -39,15 +39,15 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-check-circle text-accent text-lg md:text-xl"></i>
-                            <span>Grades 1-6</span>
+                            <span>Playgroup–Grade 6</span>
                         </div>
                     </div>
                 </div>
                 <div class="lg:w-1/2 relative w-full">
                     <div class="relative float-animation">
                         <div class="absolute inset-0 bg-accent/30 blob-shape transform rotate-6"></div>
-                        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=500&fit=crop" 
-                             alt="Happy children learning" 
+                        <img src="{% if page_images.home_hero %}{{ page_images.home_hero.image.url }}{% else %}https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=500&fit=crop{% endif %}"
+                             alt="{{ page_images.home_hero.alt_text|default:'Happy children learning' }}"
                              class="relative rounded-3xl shadow-2xl w-full object-cover h-[250px] sm:h-[350px] md:h-[400px] blob-shape">
                         <div class="absolute -bottom-4 md:-bottom-6 -left-2 md:-left-6 bg-white p-3 md:p-4 rounded-2xl shadow-xl max-w-[160px] md:max-w-none">
                             <div class="flex items-center gap-2 md:gap-3">
@@ -137,10 +137,10 @@
             <div class="flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2">
                     <div class="grid grid-cols-2 gap-4">
-                        <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=300&h=400&fit=crop" class="rounded-2xl shadow-lg w-full h-48 object-cover" alt="Classroom">
-                        <img src="https://images.unsplash.com/photo-1564429238198-e3de322d0b66?w=300&h=400&fit=crop" class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8" alt="Children playing">
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=400&fit=crop" class="rounded-2xl shadow-lg w-full h-48 object-cover" alt="Learning">
-                        <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&h=400&fit=crop" class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8" alt="Activities">
+                        <img src="{% if page_images.home_about_1 %}{{ page_images.home_about_1.image.url }}{% else %}https://images.unsplash.com/photo-1588072432836-e10032774350?w=300&h=400&fit=crop{% endif %}" class="rounded-2xl shadow-lg w-full h-48 object-cover" alt="{{ page_images.home_about_1.alt_text|default:'Classroom' }}">
+                        <img src="{% if page_images.home_about_2 %}{{ page_images.home_about_2.image.url }}{% else %}https://images.unsplash.com/photo-1564429238198-e3de322d0b66?w=300&h=400&fit=crop{% endif %}" class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8" alt="{{ page_images.home_about_2.alt_text|default:'Children playing' }}">
+                        <img src="{% if page_images.home_about_3 %}{{ page_images.home_about_3.image.url }}{% else %}https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=400&fit=crop{% endif %}" class="rounded-2xl shadow-lg w-full h-48 object-cover" alt="{{ page_images.home_about_3.alt_text|default:'Learning' }}">
+                        <img src="{% if page_images.home_about_4 %}{{ page_images.home_about_4.image.url }}{% else %}https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&h=400&fit=crop{% endif %}" class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8" alt="{{ page_images.home_about_4.alt_text|default:'Activities' }}">
                     </div>
                 </div>
                 <div class="lg:w-1/2 space-y-6">
@@ -152,11 +152,11 @@
                     <ul class="space-y-3">
                         <li class="flex items-center gap-3">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Kindergarten: Playgroup, PP1 & PP2</span>
+                            <span>Early Years: Playgroup → PP1 → PP2</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Primary: Grade 1 through Grade 6</span>
+                            <span>Primary: Grades 1 through 6</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="fas fa-check-circle text-success"></i>
@@ -182,7 +182,7 @@
             <div class="text-center max-w-3xl mx-auto mb-8 md:mb-16">
                 <span class="text-accent font-bold text-xs md:text-sm uppercase tracking-wider">Our Programs</span>
                 <h2 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold mt-2 mb-4">Enroll Your Child in a Class</h2>
-                <p class="text-white/80 text-sm md:text-base">Join us today to set your child on a path of growth in Christian principles.</p>
+                <p class="text-white/80 text-sm md:text-base">A clear learning journey from Playgroup to PP1, PP2, and Grades 1–6.</p>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -199,7 +199,7 @@
                     </div>
                 </div>
 
-                <!-- Pre-Primary -->
+                <!-- PP1 and PP2 -->
                 <div class="card bg-white text-primary shadow-2xl md:transform md:scale-105">
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-white px-4 py-1 rounded-full text-xs md:text-sm font-bold">
                         Popular
@@ -208,8 +208,8 @@
                         <div class="w-12 md:w-16 h-12 md:h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-white text-xl md:text-2xl">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2">Pre-Primary</h3>
-                        <p class="text-gray-600 mb-4">PP1 & PP2 (Ages 4-5)</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">PP1 & PP2</h3>
+                        <p class="text-gray-600 mb-4">PP1, then PP2 (Ages 4-5)</p>
                         <p class="text-sm text-gray-600 mb-6">Montessori-based learning focusing on literacy, numeracy, and character formation.</p>
                         <a href="{% url 'public:admissions' %}" class="btn btn-primary btn-sm w-full">Enroll Now</a>
                     </div>
@@ -222,7 +222,7 @@
                             <i class="fas fa-book-open"></i>
                         </div>
                         <h3 class="text-xl md:text-2xl font-bold mb-2">Primary School</h3>
-                        <p class="text-white/80 mb-4">Grade 1 - Grade 6</p>
+                        <p class="text-white/80 mb-4">Grades 1 through 6</p>
                         <p class="text-sm text-white/70 mb-6">Full CBC implementation with emphasis on values and holistic development.</p>
                         <a href="{% url 'public:admissions' %}" class="btn btn-accent btn-sm w-full">Enroll Now</a>
                     </div>
@@ -232,37 +232,37 @@
     </section>
 
     <!-- Working Hours & CTA -->
-    <section class="py-20 bg-base-100">
+    <section class="py-12 md:py-16 lg:py-20 bg-base-100">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
-                <div class="lg:w-1/2">
-                    <div class="bg-white p-8 rounded-3xl shadow-xl border-2 border-base-200">
-                        <h3 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+            <div class="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
+                <div class="w-full lg:w-1/2">
+                    <div class="bg-white p-5 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-xl border-2 border-base-200">
+                        <h3 class="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
                             <i class="fas fa-clock text-accent"></i>
                             Working Hours
                         </h3>
-                        <p class="text-gray-600 mb-6">Please find time to visit us during our open hours. We welcome tours and inquiries!</p>
+                        <p class="text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 mb-5 sm:mb-6">Please find time to visit us during our open hours. We welcome tours and inquiries!</p>
                         
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center p-4 bg-base-200 rounded-xl">
-                                <span class="font-semibold text-gray-700">Monday - Thursday</span>
-                                <span class="badge badge-primary badge-lg">8:00 AM - 5:00 PM</span>
+                        <div class="space-y-3 sm:space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4 p-3 sm:p-4 bg-base-200 rounded-xl">
+                                <span class="text-sm sm:text-base font-semibold text-gray-700">Monday - Thursday</span>
+                                <span class="badge badge-primary h-auto min-h-0 self-start sm:self-auto whitespace-nowrap px-3 py-2 text-xs sm:text-sm">8:00 AM - 5:00 PM</span>
                             </div>
-                            <div class="flex justify-between items-center p-4 bg-base-200 rounded-xl">
-                                <span class="font-semibold text-gray-700">Friday</span>
-                                <span class="badge badge-secondary badge-lg">7:00 AM - 4:00 PM</span>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4 p-3 sm:p-4 bg-base-200 rounded-xl">
+                                <span class="text-sm sm:text-base font-semibold text-gray-700">Friday</span>
+                                <span class="badge badge-secondary h-auto min-h-0 self-start sm:self-auto whitespace-nowrap px-3 py-2 text-xs sm:text-sm">7:00 AM - 4:00 PM</span>
                             </div>
-                            <div class="flex justify-between items-center p-4 bg-accent/10 rounded-xl border border-accent/20">
-                                <span class="font-semibold text-primary">Saturday & Sunday</span>
-                                <span class="badge badge-accent badge-lg">Closed</span>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4 p-3 sm:p-4 bg-accent/10 rounded-xl border border-accent/20">
+                                <span class="text-sm sm:text-base font-semibold text-primary">Saturday & Sunday</span>
+                                <span class="badge badge-accent h-auto min-h-0 self-start sm:self-auto whitespace-nowrap px-3 py-2 text-xs sm:text-sm">Closed</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="lg:w-1/2 text-center lg:text-left">
-                    <h2 class="text-4xl font-display font-bold text-primary mb-6">Ready to Join Our Family?</h2>
-                    <p class="text-xl text-gray-600 mb-8">
+                <div class="w-full lg:w-1/2 text-center lg:text-left">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-primary mb-4 sm:mb-6">Ready to Join Our Family?</h2>
+                    <p class="text-base md:text-lg lg:text-xl leading-relaxed text-gray-600 mb-6 md:mb-8">
                         Take the first step towards providing your child with quality Christian education. Our admissions team is ready to guide you through the process.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -295,38 +295,23 @@
                 </a>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                <div class="relative group overflow-hidden rounded-xl md:rounded-2xl aspect-square">
-                    <img src="https://images.unsplash.com/photo-1560541919-eb5c3a31b805?w=400&h=400&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Classroom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 md:p-4">
-                        <span class="text-white font-bold text-xs md:text-sm">Modern Classrooms</span>
-                    </div>
+            {% if gallery_photos %}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                    {% for photo in gallery_photos %}
+                        <div class="relative group overflow-hidden rounded-xl md:rounded-2xl aspect-square{% if forloop.counter == 2 %} md:col-span-2 md:row-span-2{% endif %}">
+                            <img src="{{ photo.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ photo.title }}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end {% if forloop.counter == 2 %}p-4 md:p-6{% else %}p-3 md:p-4{% endif %}">
+                                <span class="text-white font-bold {% if forloop.counter == 2 %}text-base md:text-xl{% else %}text-xs md:text-sm{% endif %}">{{ photo.title }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="relative group overflow-hidden rounded-xl md:rounded-2xl aspect-square md:col-span-2 md:row-span-2">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=800&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Play area">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 md:p-6">
-                        <span class="text-white font-bold text-base md:text-xl">Learning Through Play</span>
-                    </div>
+            {% else %}
+                <div class="text-center py-10 text-gray-400">
+                    <i class="fas fa-images text-5xl mb-4 block"></i>
+                    <p>No gallery photos have been published yet.</p>
                 </div>
-                <div class="relative group overflow-hidden rounded-xl md:rounded-2xl aspect-square">
-                    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=400&h=400&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Activities">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 md:p-4">
-                        <span class="text-white font-bold text-xs md:text-sm">Creative Activities</span>
-                    </div>
-                </div>
-                <div class="relative group overflow-hidden rounded-xl md:rounded-2xl aspect-square">
-                    <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&h=400&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Sports">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 md:p-4">
-                        <span class="text-white font-bold text-xs md:text-sm">Sports & Fitness</span>
-                    </div>
-                </div>
-                <div class="relative group overflow-hidden rounded-xl md:rounded-2xl aspect-square">
-                    <img src="https://images.unsplash.com/photo-1564429238198-e3de322d0b66?w=400&h=400&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Music">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 md:p-4">
-                        <span class="text-white font-bold text-xs md:text-sm">Music Programs</span>
-                    </div>
-                </div>
-            </div>
+            {% endif %}
             
             <div class="mt-6 text-center sm:hidden">
                 <a href="{% url 'public:gallery' %}" class="btn btn-primary">View All Photos</a>
@@ -347,83 +332,45 @@
                 </a>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-
-                <!-- Event 1 -->
-                <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-2 transition-all duration-300 group">
-                    <div class="relative h-44 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=300&fit=crop"
-                             alt="End of Term Exams" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 flex items-center gap-3">
-                            <div class="bg-white rounded-xl px-3 py-2 text-center shadow-lg">
-                                <p class="text-primary font-display font-bold text-xl leading-none">25</p>
-                                <p class="text-gray-500 text-xs font-bold uppercase">Apr</p>
+            {% if upcoming_events %}
+                <div class="grid md:grid-cols-3 gap-8">
+                    {% for event in upcoming_events %}
+                        <article class="bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-2 transition-all duration-300 group">
+                            <div class="relative h-44 overflow-hidden bg-gradient-to-br from-primary to-secondary">
+                                {% if event.image %}
+                                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                {% elif event.legacy_image_url %}
+                                    <img src="{{ event.legacy_image_url }}" alt="{{ event.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-white/20" aria-hidden="true"><i class="fas fa-calendar-alt text-6xl"></i></div>
+                                {% endif %}
+                                <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+                                <div class="absolute bottom-4 left-4 flex items-center gap-3">
+                                    <div class="bg-white rounded-xl px-3 py-2 text-center shadow-lg">
+                                        <p class="text-primary font-display font-bold text-xl leading-none">{{ event.start_date|date:"j" }}</p>
+                                        <p class="text-gray-500 text-xs font-bold uppercase">{{ event.start_date|date:"M" }}</p>
+                                    </div>
+                                    <span class="badge bg-accent text-white border-none text-xs font-bold">{{ event.get_category_display }}</span>
+                                </div>
                             </div>
-                            <span class="badge bg-accent text-white border-none text-xs font-bold">Academic</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-display font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors">End of Term Examination Week</h3>
-                        <p class="text-gray-500 text-sm mb-4 leading-relaxed line-clamp-2">All students from Grade 1 to Grade 6 will sit for end-of-term examinations.</p>
-                        <div class="flex items-center gap-2 text-sm text-gray-400">
-                            <i class="fas fa-clock text-primary"></i>
-                            <span>Apr 25 – May 2 &bull; 7:30 AM</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event 2 -->
-                <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-2 transition-all duration-300 group">
-                    <div class="relative h-44 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&h=300&fit=crop"
-                             alt="Athletics Day" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 flex items-center gap-3">
-                            <div class="bg-white rounded-xl px-3 py-2 text-center shadow-lg">
-                                <p class="text-primary font-display font-bold text-xl leading-none">10</p>
-                                <p class="text-gray-500 text-xs font-bold uppercase">May</p>
+                            <div class="p-6">
+                                <h3 class="text-lg font-display font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors">{{ event.title }}</h3>
+                                <p class="text-gray-500 text-sm mb-4 leading-relaxed line-clamp-2">{{ event.description }}</p>
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i class="fas fa-calendar-alt text-primary"></i>
+                                    <span>{{ event.start_date|date:"M j, Y" }}{% if event.end_date %} – {{ event.end_date|date:"M j, Y" }}{% endif %}</span>
+                                </div>
                             </div>
-                            <span class="badge bg-green-500 text-white border-none text-xs font-bold">Sports</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-display font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors">Inter-School Athletics Day</h3>
-                        <p class="text-gray-500 text-sm mb-4 leading-relaxed line-clamp-2">Cheer on our students at the annual inter-school athletics competition — sprints, relays, and more!</p>
-                        <div class="flex items-center gap-2 text-sm text-gray-400">
-                            <i class="fas fa-clock text-primary"></i>
-                            <span>May 10 &bull; 8:00 AM – 4:00 PM</span>
-                        </div>
-                    </div>
+                        </article>
+                    {% endfor %}
                 </div>
-
-                <!-- Event 3 -->
-                <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-base-200 hover:-translate-y-2 transition-all duration-300 group">
-                    <div class="relative h-44 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=300&fit=crop"
-                             alt="PTA Meeting" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 flex items-center gap-3">
-                            <div class="bg-white rounded-xl px-3 py-2 text-center shadow-lg">
-                                <p class="text-primary font-display font-bold text-xl leading-none">17</p>
-                                <p class="text-gray-500 text-xs font-bold uppercase">May</p>
-                            </div>
-                            <span class="badge bg-blue-500 text-white border-none text-xs font-bold">Community</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-display font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors">PTA Mid-Year Meeting</h3>
-                        <p class="text-gray-500 text-sm mb-4 leading-relaxed line-clamp-2">All parents and guardians are invited to join the Parent-Teacher Association for the mid-year meeting.</p>
-                        <div class="flex items-center gap-2 text-sm text-gray-400">
-                            <i class="fas fa-clock text-primary"></i>
-                            <span>May 17 &bull; 9:00 AM – 12:00 PM</span>
-                        </div>
-                    </div>
+            {% else %}
+                <div class="text-center py-10 text-gray-400">
+                    <i class="fas fa-calendar-check text-5xl mb-4 block"></i>
+                    <p>There are no upcoming events at the moment.</p>
                 </div>
-
-            </div>
+            {% endif %}
         </div>
     </section>
 
 {% endblock content %}
-

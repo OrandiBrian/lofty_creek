@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 import dj_database_url
 
@@ -25,14 +26,23 @@ load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-production')
+def env_bool(name, default=False):
+    return os.getenv(name, str(default)).strip().lower() in {'1', 'true', 'yes', 'on'}
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,lofty-creek.onrender.com').split(',')
+DEBUG = env_bool('DEBUG', False)
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-local-development-only'
+    else:
+        raise ImproperlyConfigured('SECRET_KEY must be set when DEBUG=False.')
+
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    if host.strip()
+]
 
 # Render uses a proxy that handles SSL termination.
 # This setting tells Django to trust the HTTP_X_FORWARDED_PROTO header.
@@ -92,6 +102,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'public.context_processors.site_links',
                 'sms.context_processors.balance_processor',
             ],
         },
@@ -142,7 +153,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -165,6 +176,18 @@ STORAGES = {
     },
 }
 
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', '')
+if AWS_STORAGE_BUCKET_NAME:
+    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'af-south-1')
+    AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN', '')
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_FILE_OVERWRITE = False
+    STORAGES['default'] = {
+        'BACKEND': 'storages.backends.s3.S3Storage',
+        'OPTIONS': {'location': 'media'},
+    }
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -185,6 +208,42 @@ LOGIN_URL = '/admin/login/'
 LOGIN_REDIRECT_URL = '/admin/'
 LOGOUT_REDIRECT_URL = '/'
 
+# Email notifications for public website inquiries
+EMAIL_BACKEND = os.getenv(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.smtp.EmailBackend',
+)
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', True)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_TIMEOUT = 10
+DEFAULT_FROM_EMAIL = os.getenv(
+    'DEFAULT_FROM_EMAIL',
+    EMAIL_HOST_USER or 'info@loftycreekchristianschool.org',
+)
+INQUIRY_NOTIFICATION_EMAIL = os.getenv(
+    'INQUIRY_NOTIFICATION_EMAIL',
+    'info@loftycreekchristianschool.org',
+)
+
+# Optional public links. Empty values are hidden instead of rendering dead links.
+FACEBOOK_URL = os.getenv(
+    'FACEBOOK_URL',
+    'https://www.facebook.com/share/18xADNP3RU/?mibextid=wwXIfr',
+)
+INSTAGRAM_URL = os.getenv(
+    'INSTAGRAM_URL',
+    'https://www.instagram.com/loftycreekchristianschool',
+)
+YOUTUBE_URL = os.getenv(
+    'YOUTUBE_URL',
+    'https://youtube.com/@loftycreekchristianschool1985?si=vI3aeh-iqjMF4u4T',
+)
+PRIVACY_POLICY_URL = os.getenv('PRIVACY_POLICY_URL', '/privacy-policy/')
+TERMS_OF_SERVICE_URL = os.getenv('TERMS_OF_SERVICE_URL', '/terms-of-service/')
+
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 31536000
@@ -195,6 +254,30 @@ if not DEBUG:
 AFRICASTALKING_USERNAME = os.getenv('AFRICASTALKING_USERNAME', 'sandbox')
 AFRICASTALKING_API_KEY = os.getenv('AFRICASTALKING_API_KEY', '')
 AFRICASTALKING_SENDER_ID = os.getenv('AFRICASTALKING_SENDER_ID', None)
+AFRICASTALKING_WEBHOOK_TOKEN = os.getenv('AFRICASTALKING_WEBHOOK_TOKEN', '')
+
+# Background SMS processing. Local development can opt in by setting this true.
+SMS_SEND_ASYNC = env_bool('SMS_SEND_ASYNC', not DEBUG)
+REDIS_URL = os.getenv('REDIS_URL', '')
+CELERY_BROKER_URL = REDIS_URL or 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 300
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BEAT_SCHEDULE = {
+    'send-due-sms-campaigns': {
+        'task': 'sms.tasks.send_due_campaigns',
+        'schedule': 60.0,
+    },
+}
+
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': REDIS_URL,
+        }
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -240,7 +323,6 @@ JAZZMIN_SETTINGS = {
         "core",
         "core.Contact",
         "core.ContactGroup",
-        "core.SMSTemplate",
         "sms",
         "sms.SMSCampaign",
         "sms.SMSMessage",
@@ -283,7 +365,6 @@ JAZZMIN_SETTINGS = {
         "public.ContactMessage":       "fas fa-envelope-open-text",
         "core.Contact":                "fas fa-address-card",
         "core.ContactGroup":           "fas fa-users",
-        "core.SMSTemplate":            "fas fa-file-alt",
         "sms.SMSCampaign":             "fas fa-broadcast-tower",
         "sms.SMSMessage":              "fas fa-envelope",
         "sms.SMSTemplate":             "fas fa-scroll",
@@ -341,11 +422,8 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # ---------------------------------------------------------------------------
-# Logging Configuration
+# Logging Configuration. Hosted services should write logs to stdout.
 # ---------------------------------------------------------------------------
-LOGS_DIR = BASE_DIR / 'logs'
-os.makedirs(LOGS_DIR, exist_ok=True)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -354,10 +432,6 @@ LOGGING = {
             'format': '{levelname} {asctime} [{module}] {message}',
             'style': '{',
         },
-        'sms_format': {
-            'format': '%(asctime)s [%(levelname)s] %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M:%S',
-        },
     },
     'handlers': {
         'console': {
@@ -365,21 +439,12 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },
-        'sms_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_DIR, 'sms_campaigns.log'),
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 5,
-            'formatter': 'sms_format',
-        },
     },
     'loggers': {
         'sms': {
-            'handlers': ['console', 'sms_file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
     },
 }
-

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Terms of Service | Lofty Creek Christian School{% endblock %}
+{% block meta_description %}Terms governing use of the Lofty Creek Christian School website and its online enquiry, information, and communication services.{% endblock %}
+
+{% block content %}
+<section class="relative py-14 md:py-20 bg-gradient-to-br from-primary to-secondary overflow-hidden">
+    <div class="absolute inset-0 hero-pattern opacity-20"></div>
+    <div class="container mx-auto px-4 relative z-10 text-center">
+        <p class="text-accent font-bold text-sm uppercase tracking-wider mb-3">Website Use</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">Terms of Service</h1>
+        <p class="text-sm sm:text-base text-white/80">Last updated: 29 July 2026</p>
+    </div>
+</section>
+
+<section class="py-12 md:py-20 bg-base-100">
+    <div class="container mx-auto px-4">
+        <article class="max-w-4xl mx-auto bg-white rounded-2xl md:rounded-3xl shadow-lg border border-base-200 p-5 sm:p-8 md:p-12 space-y-8 text-gray-700 leading-relaxed">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">1. Acceptance of these terms</h2>
+                <p>These terms govern use of the Lofty Creek Christian School website. By using the website, you agree to use it responsibly and in accordance with these terms and applicable Kenyan law. If you do not agree, please discontinue use of the website.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">2. Website information</h2>
+                <p>We aim to keep school information accurate and current, but website content is provided for general information and may change without notice. Dates, programmes, fees, availability, policies, and admissions requirements should be confirmed directly with the school before you rely on them.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">3. Admissions and enquiries</h2>
+                <p>Submitting an admissions or contact form does not guarantee enrolment, placement, a particular response time, or acceptance of any request. Admission remains subject to the school’s assessment, available capacity, required documentation, applicable policies, and formal confirmation.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">4. User responsibilities</h2>
+                <p>You agree to provide accurate information, respect the rights and privacy of others, and avoid conduct that could harm the website, school systems, learners, staff, or other users. You must not attempt unauthorised access, introduce malicious code, impersonate another person, submit unlawful or abusive material, or use website content for misleading or harmful purposes.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">5. Children and safeguarding</h2>
+                <p>The website is intended primarily for parents, guardians, staff, and members of the school community. A child should use interactive website features only with appropriate parent, guardian, or teacher guidance. Nothing on the website should be used in a way that compromises a child’s privacy, dignity, safety, or best interests.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">6. Intellectual property</h2>
+                <p>Unless otherwise stated, the school owns or is authorised to use the website’s branding, text, graphics, photographs, videos, documents, and other materials. You may view or download materials for personal, educational, and non-commercial use. Reproduction, publication, alteration, or commercial use requires prior written permission and must respect the rights and privacy of learners and staff.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">7. External links and services</h2>
+                <p>The website may link to maps, social-media platforms, document services, or other third-party websites. These services are operated independently. We are not responsible for their availability, content, security, or privacy practices, and a link does not necessarily constitute endorsement.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">8. Availability and security</h2>
+                <p>We may update, suspend, or withdraw website features for maintenance, security, operational, or legal reasons. Although we take reasonable precautions, we cannot guarantee uninterrupted or error-free access. Users remain responsible for protecting their own devices, accounts, and internet connections.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">9. Liability</h2>
+                <p>To the extent permitted by law, Lofty Creek Christian School is not liable for indirect or consequential loss arising solely from reliance on general website information, temporary unavailability, or third-party services. Nothing in these terms excludes responsibility that cannot lawfully be excluded or limits the school’s safeguarding duties.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">10. Privacy</h2>
+                <p>Our handling of personal information is described in our <a href="{% url 'public:privacy_policy' %}" class="text-primary font-semibold hover:underline">Privacy Policy</a>, which forms part of these terms.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">11. Governing law and changes</h2>
+                <p>These terms are governed by the laws of Kenya. We may update them to reflect changes in the website, school operations, or applicable law. The current version and effective date will be published on this page.</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-3">12. Contact us</h2>
+                <p>Questions about these terms may be sent to <a href="mailto:info@loftycreekchristianschool.org" class="text-primary font-semibold hover:underline">info@loftycreekchristianschool.org</a> or raised by calling <a href="tel:+254729118877" class="text-primary font-semibold hover:underline">0729118877</a>.</p>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock content %}

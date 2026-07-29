@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contact, ContactGroup, SMSTemplate
+from .models import Contact, ContactGroup
 
 
 @admin.register(Contact)
@@ -29,13 +29,3 @@ class ContactGroupAdmin(admin.ModelAdmin):
     def member_count(self, obj):
         return obj.contacts.count()
     member_count.short_description = 'Members'
-
-
-@admin.register(SMSTemplate)
-class SMSTemplateAdmin(admin.ModelAdmin):
-    list_display = ('name', 'preview')
-    search_fields = ('name', 'content')
-
-    def preview(self, obj):
-        return obj.content[:60] + '…' if len(obj.content) > 60 else obj.content
-    preview.short_description = 'Content Preview'

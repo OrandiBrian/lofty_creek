@@ -23,7 +23,7 @@
                     <li class="text-accent">About Us</li>
                 </ul>
             </div>
-            <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-4">About Our School</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4">About Our School</h1>
             <p class="text-xl text-white/80 max-w-2xl mx-auto">Discover our story, mission, and the values that drive us to provide exceptional Christian education.</p>
         </div>
     </section>
@@ -35,10 +35,10 @@
                 <div class="lg:w-1/2">
                     <div class="relative">
                         <div class="absolute -top-4 -left-4 w-full h-full bg-accent/20 rounded-3xl"></div>
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=500&fit=crop" 
-                             alt="Children learning at Lofty Creek" 
+                        <img src="{% if page_images.about_story %}{{ page_images.about_story.image.url }}{% else %}https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=500&fit=crop{% endif %}"
+                             alt="{{ page_images.about_story.alt_text|default:'Children learning at Lofty Creek' }}"
                              class="relative rounded-3xl shadow-2xl w-full object-cover h-[400px]">
-                        <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl max-w-xs">
+                        <div class="absolute -bottom-6 right-0 bg-white p-4 sm:p-6 rounded-2xl shadow-xl max-w-[calc(100%-1rem)] sm:max-w-xs">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center">
                                     <i class="fas fa-quote-left text-primary text-2xl"></i>
@@ -56,7 +56,7 @@
                     <h2 class="text-4xl font-display font-bold text-primary">Nurturing Heritage From God</h2>
                     <div class="space-y-4 text-gray-600 leading-relaxed">
                         <p>
-                            Lofty Creek Christian School is an integrated Edu-care center for children from all walks of life. We cater to children starting with the <strong class="text-primary">Kindergarten</strong> through <strong class="text-primary">Primary School Grade 6</strong>.
+                            Lofty Creek Christian School is an integrated Edu-care center for children from all walks of life. Our learning journey begins with <strong class="text-primary">Playgroup</strong>, continues through <strong class="text-primary">PP1 and PP2</strong>, and progresses from <strong class="text-primary">Grade 1 through Grade 6</strong>.
                         </p>
                         <p>
                             Located <strong>along Wambaa road, 0.5km off the Nairobi-Nakuru Highway at Muthiga's Munyua road</strong>, we have established ourselves as a beacon of quality Christian education in the region.
@@ -80,18 +80,18 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Mission -->
-                <div class="card bg-white shadow-xl hover:shadow-2xl transition-all group">
-                    <div class="card-body p-8">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                <div class="card min-w-0 bg-white shadow-xl hover:shadow-2xl transition-all group">
+                    <div class="card-body min-w-0 p-5 sm:p-8">
+                        <div class="flex items-center gap-3 sm:gap-4 mb-6">
+                            <div class="w-14 h-14 sm:w-16 sm:h-16 shrink-0 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors">
                                 <i class="fas fa-flag text-3xl text-primary group-hover:text-white transition-colors"></i>
                             </div>
-                            <h3 class="text-3xl font-display font-bold text-primary">Our Mission</h3>
+                            <h3 class="text-2xl sm:text-3xl font-display font-bold text-primary">Our Mission</h3>
                         </div>
                         <p class="text-lg text-gray-600 leading-relaxed">
                             To transform this generation through sound education with a distinctly <span class="text-primary font-bold">Christian worldview</span>. We take our responsibility as educators seriously and with deep reverence, nurturing children who will become an influence for good in the world.
                         </p>
-                        <div class="mt-6 flex gap-2">
+                        <div class="mt-6 flex flex-wrap gap-2">
                             <span class="badge badge-primary badge-outline">Transformation</span>
                             <span class="badge badge-primary badge-outline">Christian Values</span>
                             <span class="badge badge-primary badge-outline">Excellence</span>
@@ -100,18 +100,18 @@
                 </div>
 
                 <!-- Vision -->
-                <div class="card bg-white shadow-xl hover:shadow-2xl transition-all group">
-                    <div class="card-body p-8">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center group-hover:bg-secondary transition-colors">
+                <div class="card min-w-0 bg-white shadow-xl hover:shadow-2xl transition-all group">
+                    <div class="card-body min-w-0 p-5 sm:p-8">
+                        <div class="flex items-center gap-3 sm:gap-4 mb-6">
+                            <div class="w-14 h-14 sm:w-16 sm:h-16 shrink-0 bg-secondary/10 rounded-2xl flex items-center justify-center group-hover:bg-secondary transition-colors">
                                 <i class="fas fa-eye text-3xl text-secondary group-hover:text-white transition-colors"></i>
                             </div>
-                            <h3 class="text-3xl font-display font-bold text-primary">Our Vision</h3>
+                            <h3 class="text-2xl sm:text-3xl font-display font-bold text-primary">Our Vision</h3>
                         </div>
                         <p class="text-lg text-gray-600 leading-relaxed">
                             To provide <span class="text-secondary font-bold">Bible-centered Christian education</span> preparing young people for service to God and Mankind. We envision raising a generation of leaders grounded in faith and equipped with knowledge.
                         </p>
-                        <div class="mt-6 flex gap-2">
+                        <div class="mt-6 flex flex-wrap gap-2">
                             <span class="badge badge-secondary badge-outline">Bible-Centered</span>
                             <span class="badge badge-secondary badge-outline">Leadership</span>
                             <span class="badge badge-secondary badge-outline">Service</span>
@@ -166,7 +166,7 @@
     </section>
 
     <!-- Extracurricular Activities -->
-    <section class="py-20 bg-base-100">
+    <section id="outdoors-activities" class="py-20 bg-base-100 scroll-mt-28">
         <div class="container mx-auto px-4">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="text-accent font-bold text-sm uppercase tracking-wider">Beyond the Classroom</span>
@@ -178,8 +178,8 @@
                 <!-- Activity 1 -->
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
                     <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1560541919-eb5c3a31b805?w=400&h=300&fit=crop" 
-                             alt="Various Classes" 
+                        <img src="{% if page_images.about_activity_1 %}{{ page_images.about_activity_1.image.url }}{% else %}https://images.unsplash.com/photo-1560541919-eb5c3a31b805?w=400&h=300&fit=crop{% endif %}"
+                             alt="{{ page_images.about_activity_1.alt_text|default:'Various Classes' }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </figure>
                     <div class="card-body">
@@ -196,8 +196,8 @@
                 <!-- Activity 2 -->
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
                     <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop" 
-                             alt="Environment" 
+                        <img src="{% if page_images.about_activity_2 %}{{ page_images.about_activity_2.image.url }}{% else %}https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop{% endif %}"
+                             alt="{{ page_images.about_activity_2.alt_text|default:'Environment' }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </figure>
                     <div class="card-body">
@@ -214,8 +214,8 @@
                 <!-- Activity 3 -->
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
                     <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop" 
-                             alt="Gardening" 
+                        <img src="{% if page_images.about_activity_3 %}{{ page_images.about_activity_3.image.url }}{% else %}https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop{% endif %}"
+                             alt="{{ page_images.about_activity_3.alt_text|default:'Gardening' }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </figure>
                     <div class="card-body">
@@ -232,8 +232,8 @@
                 <!-- Activity 4 -->
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
                     <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1514117445516-2ecfc9c4ec90?w=400&h=300&fit=crop" 
-                             alt="Music" 
+                        <img src="{% if page_images.about_activity_4 %}{{ page_images.about_activity_4.image.url }}{% else %}https://images.unsplash.com/photo-1514117445516-2ecfc9c4ec90?w=400&h=300&fit=crop{% endif %}"
+                             alt="{{ page_images.about_activity_4.alt_text|default:'Music' }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </figure>
                     <div class="card-body">
@@ -250,8 +250,8 @@
                 <!-- Activity 5 -->
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
                     <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&h=300&fit=crop" 
-                             alt="Languages" 
+                        <img src="{% if page_images.about_activity_5 %}{{ page_images.about_activity_5.image.url }}{% else %}https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&h=300&fit=crop{% endif %}"
+                             alt="{{ page_images.about_activity_5.alt_text|default:'Languages' }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </figure>
                     <div class="card-body">
@@ -268,8 +268,8 @@
                 <!-- Activity 6 -->
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group overflow-hidden">
                     <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" 
-                             alt="Fitness" 
+                        <img src="{% if page_images.about_activity_6 %}{{ page_images.about_activity_6.image.url }}{% else %}https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop{% endif %}"
+                             alt="{{ page_images.about_activity_6.alt_text|default:'Fitness' }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </figure>
                     <div class="card-body">
@@ -295,63 +295,32 @@
                 <p class="text-gray-600">Our team of competent teachers is equipped with the skill, knowledge, wisdom, and enthusiasm required to leave a lasting impression on young minds.</p>
             </div>
 
+            {% if team_members %}
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Staff Member 1 -->
+                {% for member in team_members %}
                 <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
                     <figure class="px-6 pt-6">
                         <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop" alt="Director" class="w-full h-full object-cover">
+                            {% if member.photo %}
+                                <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <div class="w-full h-full flex items-center justify-center bg-primary/10 text-primary" aria-hidden="true">
+                                    <i class="fas fa-user text-5xl"></i>
+                                </div>
+                            {% endif %}
                         </div>
                     </figure>
                     <div class="card-body items-center text-center">
-                        <h3 class="card-title text-primary">School Director</h3>
-                        <p class="text-sm text-accent font-semibold">Leadership & Vision</p>
-                        <p class="text-xs text-gray-500 mt-2">Guiding the school's mission with wisdom and dedication to Christian education.</p>
+                        <h3 class="card-title text-primary">{{ member.name }}</h3>
+                        <p class="text-sm text-accent font-semibold">{{ member.role }}</p>
+                        {% if member.bio %}
+                            <p class="text-xs text-gray-500 mt-2">{{ member.bio }}</p>
+                        {% endif %}
                     </div>
                 </div>
-
-                <!-- Staff Member 2 -->
-                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
-                    <figure class="px-6 pt-6">
-                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop" alt="Head Teacher" class="w-full h-full object-cover">
-                        </div>
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h3 class="card-title text-primary">Head Teacher</h3>
-                        <p class="text-sm text-accent font-semibold">Academic Excellence</p>
-                        <p class="text-xs text-gray-500 mt-2">Ensuring high standards of curriculum implementation and teacher development.</p>
-                    </div>
-                </div>
-
-                <!-- Staff Member 3 -->
-                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
-                    <figure class="px-6 pt-6">
-                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop" alt="Teacher" class="w-full h-full object-cover">
-                        </div>
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h3 class="card-title text-primary">Class Teachers</h3>
-                        <p class="text-sm text-accent font-semibold">Primary Department</p>
-                        <p class="text-xs text-gray-500 mt-2">Passionate educators committed to nurturing each child's unique potential.</p>
-                    </div>
-                </div>
-
-                <!-- Staff Member 4 -->
-                <div class="card bg-white shadow-lg hover:shadow-xl transition-all group">
-                    <figure class="px-6 pt-6">
-                        <div class="w-32 h-32 mx-auto rounded-full bg-base-200 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=200&h=200&fit=crop" alt="ECDE Teacher" class="w-full h-full object-cover">
-                        </div>
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h3 class="card-title text-primary">ECDE Teachers</h3>
-                        <p class="text-sm text-accent font-semibold">Early Childhood</p>
-                        <p class="text-xs text-gray-500 mt-2">Specialized in Montessori and play-based learning for our youngest students.</p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
+            {% endif %}
         </div>
     </section>
 

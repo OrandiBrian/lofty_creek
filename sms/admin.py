@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.utils.html import format_html
 from .models import SMSCampaign, SMSMessage, SMSTemplate
-from .services import send_bulk_sms
+from .tasks import dispatch_campaign
 
 
 @admin.register(SMSCampaign)
@@ -15,6 +15,11 @@ class SMSCampaignAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 20
     actions = ['send_now']
+
+    def save_model(self, request, obj, form, change):
+        if obj.scheduled_at and obj.status == 'DRAFT':
+            obj.status = 'QUEUED'
+        super().save_model(request, obj, form, change)
 
     fieldsets = (
         ('Campaign Details', {
@@ -33,6 +38,7 @@ class SMSCampaignAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         colours = {
             'SENT':    '#28a745',
+            'PARTIAL': '#fd7e14',
             'FAILED':  '#dc3545',
             'QUEUED':  '#ffc107',
             'SENDING': '#17a2b8',
@@ -59,7 +65,7 @@ class SMSCampaignAdmin(admin.ModelAdmin):
             if campaign.status in ['DRAFT', 'QUEUED', 'FAILED']:
                 campaign.status = 'QUEUED'
                 campaign.save()
-                result = send_bulk_sms(campaign)
+                result = dispatch_campaign(campaign)
                 if 'success' in result:
                     self.message_user(request, f"✅ {campaign.name}: {result['success']}", messages.SUCCESS)
                 else:
